@@ -1,12 +1,10 @@
-import os
-
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
-    validate_login_error, download_na_np
+    validate_login_error, download_na, download_np, user_last_login
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
-from View.alertas import alert, progress_bar, loading
+from View.alertas import alert, init_janela_alerta
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
 
@@ -14,8 +12,8 @@ import PySimpleGUI as sg
 def option_navegador():
 
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
-    download_path =r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    # options.add_argument("--headless")
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
     options.add_experimental_option('prefs', {
         "download.default_directory": download_path,  # change default directory for downloads
         "download.prompt_for_download": False,  # to auto download the file
@@ -48,7 +46,10 @@ def init_form_login(navegador):
 
                 if validate_login_error(navegador):
                     janela_login['mensagem'].update('Verifique o usuario e senha informados!')
+                    janela_login.refresh()
                 else:
+                    janela_login['mensagem'].update('Logado !')
+                    janela_login.refresh()
                     acessa_tela_incial_auto(navegador)
                     janela_login.close()
                     init_form_principal()
@@ -68,6 +69,7 @@ def init_form_principal():
             janela_form.close()
             navegador.quit()
             break
+
 ## Botao limpar
         if event == "Limpar":
             clean_fields(janela_form)
@@ -89,15 +91,12 @@ def init_form_principal():
 
             for i, auto in enumerate(df['autos']):
                 if len(auto) < 10 or len(auto) > 10:
-                    print(f'verificar o tamanho do auto - {auto}, seq.{i+1}')
                     alert('Atenção', f'verificar o tamanho do auto - {auto}, seq.{i+1}')
                     break
                 elif ' ' in auto:
-                    print(f'o auto - {auto}, seq.{i+1} contém espaço(s) em branco')
                     alert('Atenção', f'o auto - {auto}, seq.{i+1}, contém espaço(s) em branco')
                     break
                 elif '\t' in auto:
-                    print(f'verifique o auto - {auto}, seq.{i+1}')
                     alert('Atenção', f'verifique o auto - {auto}, seq.{i+1}')
                     break
                 else:
@@ -105,17 +104,24 @@ def init_form_principal():
                     #     os.mkdir(diretorio + '\\' + str(auto))
                     # else:
                     #     alert('Atenção', f'verifique o auto - {auto}, seq.{i+1}, O diretório já existe.')
-                    print(f'Baixando auto - {auto} ')
+                    janela_alerta = init_janela_alerta()
+                    janela_form.hide()
+                    janela_alerta['mensagem'].update(f' Iniciando ait {auto}')
+                    janela_alerta.refresh()
+                    print(f'Baixando auto - {auto}... ')
                     pesquisa_auto(navegador, auto)
                     download_relatorio_resumido(navegador)
                     df['relatório'] = 'Ok'
-                    download_na_np(navegador)
-                    df['NotificacaoNA'] = 'Ok'
-                    df['NotificacaoNP'] = 'Ok'
-                    print(f'Finalizado')
+                    #download_na(navegador)
+                    #df['NotificacaoNA'] = 'Ok'
+                    #download_np(navegador)
+                    #df['NotificacaoNP'] = 'Ok'
+                    print(f'Finalizado.')
+                    janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
 
-                alert('Sucesso !', 'Os arquivos foram baixados !')
+            janela_form.un_hide()
+            alert('Sucesso !', 'Os arquivos foram baixados !')
             df.to_csv("saida.csv", encoding='utf-8')
 
 

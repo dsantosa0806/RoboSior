@@ -23,6 +23,7 @@ def init_janela_form():
 
         [sg.Text('',key='Status')],
         [sg.Text('Quais Documentos deseja baixar ?',font=('Segoe UI',12))],
+        [sg.Checkbox('Relatório Financeiro', key='Relatório Financeiro', font=('Segoe UI', 10))],
         [sg.Checkbox('Relatório Resumido', key='Relatório Resumido', font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de autuação', key='Notificação de autuação',font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de Penalidade', key='Notificação de Penalidade',font=('Segoe UI',10))],

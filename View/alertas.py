@@ -26,4 +26,26 @@ def progress_bar(tipo):
     window.close()
 
 
+def init_janela_alerta():
+
+    # Layout
+    sg.SetOptions(background_color='#363636', text_element_background_color='#363636',
+                 element_background_color='#363636', scrollbar_color=None, input_elements_background_color='#F7F3EC',
+                 button_color=('white', '#4F4F4F'))
+
+    # sg.theme('SystemDefaultForReal')
+    layoutcampos = [
+
+
+        [[sg.Col([[sg.Text('Baixando...', grab=True,font=('Segoe UI', 8))]], pad=(0, 0)),
+          sg.Col([[sg.Text(sg.SYMBOL_X, enable_events=True, key='-X-')]],  # '❎'
+                 element_justification='r', grab=True, pad=(0, 0), expand_x=True)],
+         [sg.HorizontalSeparator()]],
+        [sg.Text('auto', key='mensagem', size=(50, 0), font=('Segoe UI', 8))],  # Usuario
+
+    ]
+
+    return sg.Window('', finalize=True,
+                     layout=layoutcampos,
+                     no_titlebar=True)
 

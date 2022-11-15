@@ -45,6 +45,11 @@ def login(navegador,usuario,senha):
             alert('Loading', 'Aguardando...')
 
 
+def user_last_login(navegador):
+    userpath = '//*[@id="center-pane"]/div/div/div[1]/div[2]'
+    return navegador.find_element(By.XPATH,userpath).text()
+
+
 def validate_login_error(navegador):
     cpfpath = '// *[ @ id = "UserName"]'
     senhapath = '//*[@id="Password"]'
@@ -77,6 +82,7 @@ def pesquisa_auto(navegador,auto):
     path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
     path_details = '//*[@id="gridInfracao"]/table/tbody/tr/td[1]/a'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
+
 
     try:
         WebDriverWait(navegador, 10).until(
@@ -125,6 +131,19 @@ def pesquisa_auto(navegador,auto):
         alert('Loading', 'Aguardando...')
 
 
+def validate_auto_exists(navegador):
+    path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
+    path_auto = '//*[@id="NumeroAuto"]'
+
+    try:
+        navegador.find_element(By.XPATH,path_auto_empty).is_displayed()
+        alert('Error', 'Auto de infração não localizado, verifique os dados e tente novamente')
+        navegador.find_element(By.XPATH,path_auto).clear()
+        return True
+    except NoSuchElementException:
+        return False
+
+
 def download_relatorio_resumido(navegador):
     path_id_relatorio = 'btnExportarRelatorioResumido'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
@@ -147,44 +166,64 @@ def download_relatorio_resumido(navegador):
         print('Travei no 7 passo, clique em Baixar Relatório o menu')
 
 
-def download_na_np(navegador):
-    ## TRATAMENTO DE URL NA E NP
-    urlBaseSior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
-    Url = navegador.page_source.encode('utf-8')
-    soup = BeautifulSoup(Url, 'html.parser')
-    elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
-    padrao_na = 'DownloadSegundaViaNA/'
-    padrao_np = 'DownloadSegundaViaNP/'
-    posicaoNa = elementos.find(padrao_na)
-    posicaoNp = elementos.find(padrao_np)
-    LenghtNa = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
-    LenghtNp = len('DownloadSegundaViaNP/107851973?numeroAuto=D008521814&amp;indicadorComprovacao=2101')
-    LenghtCodInfraNp = len('DownloadSegundaViaNP/xxxxxxxxx')
-    LenghtCodInfraNa = len('DownloadSegundaViaNA/xxxxxxxxx')
-    urlDownloadNa = re.sub('amp;',"",elementos[posicaoNa:posicaoNa + LenghtNa])
-    urlDownloadNp = re.sub('amp;',"",elementos[posicaoNp:posicaoNp + LenghtNp])
-    padrao_CodInfra_Na = 'DownloadSegundaViaNA/'
-    padrao_CodInfra_Np = 'DownloadSegundaViaNP/'
-
-    'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/DownloadSegundaViaNP/118072531?numeroAuto=E002265146&amp;indicadorComprovacao='
-    'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/DownloadSegundaViaNA/91599795?numeroAuto=E002265146&indicadorComprovacao=2101'
-
-
-
-    posicaoCodInfraNa = urlDownloadNa.find(padrao_CodInfra_Na)
-    posicaoCodInfraNp = urlDownloadNp.find(padrao_CodInfra_Np)
-    codInfracaoNa = urlDownloadNa[len(padrao_CodInfra_Na):LenghtCodInfraNa]
-    codInfracaoNp = urlDownloadNp[len(padrao_CodInfra_Np):LenghtCodInfraNp]
-
-
-    # EXECUTANDO O DOWNLOAD NA, NP, AR
+def download_relatorio_financeiro(navegador):
+    path_id_relatorio_financeiro = 'btnExportarRelatorioFinanceiro'
+    path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
 
     try:
-        navegador.get(urlBaseSior + urlDownloadNa)  # # DOWNLOAD NA
+        WebDriverWait(navegador, 120).until(
+            EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
+    except ElementClickInterceptedException:
+        alert('Loading', 'Aguardando Relatório Financeiro...')
+
+    # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
+    try:
+        WebDriverWait(navegador, 120).until(
+            EC.element_to_be_clickable(
+                (By.ID, path_id_relatorio_financeiro))).click()
+        time.sleep(
+            3)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+
+    except ElementClickInterceptedException:
+        alert('Loading', 'Aguardando Relatório Financeiro...')
+
+
+def download_na(navegador):
+    ## TRATAMENTO DE URL NA
+    url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
+    url = navegador.page_source.encode('utf-8')
+    soup = BeautifulSoup(url, 'html.parser')
+    elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
+    padrao_na = 'DownloadSegundaViaNA/'
+    posicao_na = elementos.find(padrao_na)
+    lenght_na = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
+    url_download_na = re.sub('amp;',"",elementos[posicao_na:posicao_na + lenght_na])
+
+    # EXECUTANDO O DOWNLOAD NA, NP, AR
+    try:
+        navegador.get(url_base_sior + url_download_na)  # # DOWNLOAD NA
         time.sleep(2)
         trata_erro(navegador)
 
-        navegador.get(urlBaseSior + urlDownloadNp)  # # # DOWNLOAD NP
+    except TimeoutException:
+        alert('Loading', 'Aguardando...')
+
+
+def download_np(navegador):
+    ## TRATAMENTO DE URL NA E NP
+    url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
+    url = navegador.page_source.encode('utf-8')
+    soup = BeautifulSoup(url, 'html.parser')
+    elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
+    padrao_np = 'DownloadSegundaViaNP/'
+    posicao_np = elementos.find(padrao_np)
+    lenght_np = len('DownloadSegundaViaNP/107851973?numeroAuto=D008521814&amp;indicadorComprovacao=2101')
+    url_download_np = re.sub('amp;',"",elementos[posicao_np:posicao_np + lenght_np])
+
+    # EXECUTANDO O DOWNLOAD NP
+    try:
+
+        navegador.get(url_base_sior + url_download_np)  # # # DOWNLOAD NP
         time.sleep(2)
         trata_erro(navegador)
 

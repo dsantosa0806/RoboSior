@@ -12,6 +12,7 @@ def clean_fields(window):
 def reset_fields(event, window):
     try:
         progress_bar('Resetando campos')
+        window.find_element('Relatório Financeiro').Update('')
         window.find_element('Relatório Resumido').Update('')
         window.find_element('Notificação de autuação').Update('')
         window.find_element('Notificação de Penalidade').Update('')

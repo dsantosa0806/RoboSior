@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import os
 from View.alertas import alert, progress_bar
 from View.tela_form import init_janela_form
 
@@ -11,9 +12,10 @@ def init_janela_login():
     # sg.theme('SystemDefaultForReal')
     layoutcampos = [
 
+        [sg.Text(f'Bem vindo(a), {os.getlogin()} !', size=(50, 0), font=('Segoe UI', 10))],  # Usuario
         [sg.Image('images\Robot.png',size=(400,400))],
-        [sg.Text('Bem vindo ! Para continuar, realize o login.', size=(50, 0), font=('Segoe UI', 8))],  # Usuario
-        [sg.Text('CPF ou E-mail (SIOR)',size=(20, 0),font=('Segoe UI',8))],# Usuario
+        [sg.Text('Para continuar, realize o login da sua conta no SIOR.', size=(50, 0), font=('Segoe UI', 8))],  # Usuario]
+        [sg.Text('CPF ou E-mail (SIOR)',size=(20, 0),font=('Segoe UI',8))], # Usuario
         [sg.Input(size=(50, 0), key='Usuario',font=('Segoe UI',10))], # Usuario
 
         [sg.Text('Senha (SIOR)', size=(20, 0),font=('Segoe UI',8))],# Senha

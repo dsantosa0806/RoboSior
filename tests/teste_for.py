@@ -2,6 +2,8 @@ import pandas as pd
 
 
 array = ['B123456789','B987654321','B 12345671']
+
+
 df = pd.DataFrame(data=array,columns=['auto'])
 df['Teste']= 'teste'
 df['Teste2'] = 'teste2'
@@ -13,15 +15,15 @@ print(df)
 
 # percorrendo o array de autos
 for i, auto in enumerate(df['auto']):
-    print(auto)
+    # print(auto)
     if len(auto) < 10 or len(auto) > 10:
-        print(f'verificar o tamanho do auto - {auto}')
+        # print(f'verificar o tamanho do auto - {auto}')
         break
     elif ' ' in auto:
-        print(f'o auto - {auto}, contém espaço(s) em branco')
+        # print(f'o auto - {auto}, contém espaço(s) em branco')
         break
     elif '\t' in auto:
-        print(f'verifique o auto - {auto}')
+        # print(f'verifique o auto - {auto}')
         break
 
 

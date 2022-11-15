@@ -15,3 +15,5 @@ for i in os.listdir():
     os.rename(diretorio_atual,diretorio_destino + diretorio)
 
 
+
+
