@@ -38,14 +38,16 @@ def init_form_login(navegador):
             navegador.quit()
             break
         if event == "Validar":
+            janela_login['mensagem'].update('')
+            janela_login.refresh()
             if values['Usuario'] == '' or values['Senha'] == '':
-                janela_login['mensagem'].update('Verifique o usuario e senha informados!')
+                janela_login['mensagem'].update('Atenção ! Verifique o usuario e senha informados.')
             else:
                 ## janela_login['mensagem'].update('Logado !')
                 login(navegador,values['Usuario'],values['Senha'])
 
                 if validate_login_error(navegador):
-                    janela_login['mensagem'].update('Verifique o usuario e senha informados!')
+                    janela_login['mensagem'].update('Acesso inválido ! Verifique o usuario e senha informados.')
                     janela_login.refresh()
                 else:
                     janela_login['mensagem'].update('Acesso Validado !')
@@ -60,7 +62,7 @@ def init_form_principal():
     while True:
 
         event, values = janela_form.read()  # Ativa a Janela
-        # print(event, values)
+        print(event, values)
         if (event == sg.WINDOW_CLOSED
             or event == 'Sair'
             or event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT)\
@@ -106,16 +108,21 @@ def init_form_principal():
                     #     os.mkdir(diretorio + '\\' + str(auto))
                     # else:
                     #     alert('Atenção', f'verifique o auto - {auto}, seq.{i+1}, O diretório já existe.')
+
+
+
                     janela_alerta = init_janela_alerta()
                     janela_form.hide()
                     janela_alerta['mensagem'].update(f' Iniciando ait {auto}')
                     janela_alerta.refresh()
                     print(f'Baixando auto - {auto}... ')
                     pesquisa_auto(navegador, auto)
-                    download_relatorio_resumido(navegador)
-                    df['relatório'] = 'Ok'
+                    if event == 'Relatório Resumido':
+                        download_relatorio_resumido(navegador)
+
+
                     download_na(navegador)
-                    #df['NotificacaoNA'] = 'Ok'
+
                     download_np(navegador)
                     #df['NotificacaoNP'] = 'Ok'
                     download_relatorio_financeiro(navegador)

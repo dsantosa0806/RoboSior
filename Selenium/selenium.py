@@ -75,14 +75,12 @@ def acessa_tela_incial_auto(navegador):
 
 
 def pesquisa_auto(navegador,auto):
-
     input_ait = auto
     path_auto = '//*[@id="NumeroAuto"]'
     path_btn_closefilter = '//*[@id="SituacoesInfracaoSelecionadas_taglist"]/li/span[2]'
     path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
     path_details = '//*[@id="gridInfracao"]/table/tbody/tr/td[1]/a'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
-
 
     try:
         WebDriverWait(navegador, 10).until(
@@ -96,7 +94,6 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_auto))).send_keys(input_ait)
     except TimeoutException:
         alert('Loading', 'Aguardando...')
-
     # DESABILITA FILTRO AUTO
     if navegador.find_element(By.XPATH,path_btn_closefilter).is_displayed():
         try:
@@ -106,28 +103,18 @@ def pesquisa_auto(navegador,auto):
             alert('Loading', 'Aguardando...')
     else:
         pass
-
     # REALIZA A CONSULTA
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_btn_consultar))).click()
     except TimeoutException:
         alert('Loading', 'Aguardando...')
-
     #detalhes
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_details))).click()
 
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
-
-    # CLIQUE PARA ABRIR MENU
-    try:
-        WebDriverWait(navegador, 120).until(
-            EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
-
-    except ElementClickInterceptedException:
         alert('Loading', 'Aguardando...')
 
 
@@ -199,7 +186,7 @@ def download_na(navegador):
     lenght_na = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
     url_download_na = re.sub('amp;',"",elementos[posicao_na:posicao_na + lenght_na])
 
-    # EXECUTANDO O DOWNLOAD NA, NP, AR
+    # EXECUTANDO O DOWNLOAD NA
     try:
         navegador.get(url_base_sior + url_download_na)  # # DOWNLOAD NA
         time.sleep(2)
@@ -243,4 +230,10 @@ def trata_erro(navegador):
         pass
     else:
         navegador.back()  # Deve retornar a tela anterior
+
+
+def extract_info_ait(navegador):
+    situacao_fase_auto_path = '//*[@id="center-pane"]/div/div/div/div[1]/div[2]/div[3]/text()'
+    situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text()
+    return situacao_fase_auto
 
