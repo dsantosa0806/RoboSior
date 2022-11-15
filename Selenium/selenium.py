@@ -57,7 +57,7 @@ def validate_login_error(navegador):
 
     try:
         navegador.find_element(By.XPATH,login_error).is_displayed()
-        alert('Error', 'Erro ao realizar o Login, verifique os dados e tente novamente')
+
         navegador.find_element(By.XPATH,cpfpath).clear()
         navegador.find_element(By.XPATH,senhapath).clear()
         return True
@@ -147,7 +147,7 @@ def validate_auto_exists(navegador):
 def download_relatorio_resumido(navegador):
     path_id_relatorio = 'btnExportarRelatorioResumido'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
-
+    time.sleep(1)
     try:
         WebDriverWait(navegador, 120).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
@@ -169,7 +169,7 @@ def download_relatorio_resumido(navegador):
 def download_relatorio_financeiro(navegador):
     path_id_relatorio_financeiro = 'btnExportarRelatorioFinanceiro'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
-
+    time.sleep(1)
     try:
         WebDriverWait(navegador, 120).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()

@@ -14,6 +14,9 @@ def init_janela_login():
 
         [sg.Text(f'Bem vindo(a), {os.getlogin()} !', size=(50, 0), font=('Segoe UI', 10))],  # Usuario
         [sg.Image('images\Robot.png',size=(400,400))],
+        # [sg.Text('Caro colaborador, para o correto funcionamento da aplicação, '
+        #          'verique a sua versão do Chromme em: chrome://settings/help  !',
+        #          size=(50, 0), font=('Segoe UI', 8),tooltip='chrome://settings/help')],  # Versão
         [sg.Text('Para continuar, realize o login da sua conta no SIOR.', size=(50, 0), font=('Segoe UI', 8))],  # Usuario]
         [sg.Text('CPF ou E-mail (SIOR)',size=(20, 0),font=('Segoe UI',8))], # Usuario
         [sg.Input(size=(50, 0), key='Usuario',font=('Segoe UI',10))], # Usuario

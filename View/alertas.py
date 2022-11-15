@@ -37,7 +37,7 @@ def init_janela_alerta():
     layoutcampos = [
 
 
-        [[sg.Col([[sg.Text('Baixando...', grab=True,font=('Segoe UI', 8))]], pad=(0, 0)),
+        [[sg.Col([[sg.Text('Estamos preparando tudo ! por favor aguarde...', grab=True,font=('Segoe UI', 8))]], pad=(0, 0)),
           sg.Col([[sg.Text(sg.SYMBOL_X, enable_events=True, key='-X-')]],  # '❎'
                  element_justification='r', grab=True, pad=(0, 0), expand_x=True)],
          [sg.HorizontalSeparator()]],

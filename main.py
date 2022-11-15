@@ -1,7 +1,7 @@
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
-    validate_login_error, download_na, download_np, user_last_login
+    validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
 from View.alertas import alert, init_janela_alerta
@@ -48,7 +48,7 @@ def init_form_login(navegador):
                     janela_login['mensagem'].update('Verifique o usuario e senha informados!')
                     janela_login.refresh()
                 else:
-                    janela_login['mensagem'].update('Logado !')
+                    janela_login['mensagem'].update('Acesso Validado !')
                     janela_login.refresh()
                     acessa_tela_incial_auto(navegador)
                     janela_login.close()
@@ -65,7 +65,9 @@ def init_form_principal():
             or event == 'Sair'
             or event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT)\
                 and sg.popup_yes_no('Deseja Sair',
-                                    icon=r'images\robot.ico',font=('Segoe UI',10)) == 'Yes':
+                                    icon=r'images\robot.ico',
+                                    no_titlebar=True,
+                                    font=('Segoe UI',10)) == 'Yes':
             janela_form.close()
             navegador.quit()
             break
@@ -112,16 +114,16 @@ def init_form_principal():
                     pesquisa_auto(navegador, auto)
                     download_relatorio_resumido(navegador)
                     df['relatório'] = 'Ok'
-                    #download_na(navegador)
+                    download_na(navegador)
                     #df['NotificacaoNA'] = 'Ok'
-                    #download_np(navegador)
+                    download_np(navegador)
                     #df['NotificacaoNP'] = 'Ok'
+                    download_relatorio_financeiro(navegador)
                     print(f'Finalizado.')
                     janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
 
             janela_form.un_hide()
-            alert('Sucesso !', 'Os arquivos foram baixados !')
             df.to_csv("saida.csv", encoding='utf-8')
 
 

@@ -31,7 +31,8 @@ def init_janela_form():
         [sg.Text('Insira os autos abaixo ?',font=('Segoe UI',12)),
          sg.Button('Limpar',font=('Segoe UI',10))
          ],
-        [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10))],
+        [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10),
+                      tooltip='Antes de alimentar os campos, verifique o tamanho do Nºdo Auto')],
         [sg.Text('______________________________')],
         [sg.Output(size=(50, 10),font=('Segoe UI',10))],
         [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),
