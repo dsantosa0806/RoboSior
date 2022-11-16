@@ -16,6 +16,8 @@ def reset_fields(event, window):
         window.find_element('Notificação de autuação').Update('')
         window.find_element('Notificação de Penalidade').Update('')
         window.find_element('auto').Update('')
+        window.find_element('PastasSim').Update('')
+        window.find_element('PastasNão').Update('')
     except:
         alert('Um Erro ocorreu', 'Contate o administrador')
 

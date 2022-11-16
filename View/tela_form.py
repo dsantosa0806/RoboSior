@@ -1,8 +1,4 @@
 import PySimpleGUI as sg
-import pandas as pd
-
-from View.alertas import alert
-from View.limpa_campos import clean_fields, reset_fields
 
 
 def init_janela_form():
@@ -28,16 +24,21 @@ def init_janela_form():
         [sg.Checkbox('Notificação de autuação', key='Notificação de autuação',font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de Penalidade', key='Notificação de Penalidade',font=('Segoe UI',10))],
         [sg.Text('______________________________')],
+        [sg.Text('Deseja criar pastas ?', font=('Segoe UI', 12))],
+        [sg.Checkbox('Sim', key='PastasSim', font=('Segoe UI', 10)),
+         sg.Checkbox('Não', key='PastasNão', font=('Segoe UI', 10))],
         [sg.Text('Insira os autos abaixo ?',font=('Segoe UI',12)),
          sg.Button('Limpar',font=('Segoe UI',10))
          ],
+        [sg.Text('______________________________')],
         [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10),
                       tooltip='Antes de alimentar os campos, verifique o tamanho do Nºdo Auto')],
         [sg.Text('______________________________')],
         [sg.Output(size=(50, 10),font=('Segoe UI',10))],
         [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),
          sg.Button('Sair',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
-         ],
+         ]
+
         ## [sg.Image('images\Serget.png', size=(200, 200))],
     ]
 

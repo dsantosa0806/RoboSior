@@ -4,9 +4,11 @@ from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_inc
     validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
-from View.alertas import alert, init_janela_alerta
+from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
+
+from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas
 
 
 def option_navegador():
@@ -23,7 +25,7 @@ def option_navegador():
     return options
 
 
-navegador = webdriver.Chrome(chrome_options=option_navegador())
+navegador = webdriver.Chrome(options=option_navegador())
 
 
 def init_form_login(navegador):
@@ -94,38 +96,32 @@ def init_form_principal():
                 alert('Atenção','O limite de 10 autos foi atingido')
 
             for i, auto in enumerate(df['autos']):
-                if len(auto) < 10 or len(auto) > 10:
-                    alert('Atenção', f'verificar o tamanho do auto - {auto}, seq.{i+1}')
+                if valida_campos_docs(values['Relatório Financeiro'],values['Relatório Resumido'],
+                                      values['Notificação de autuação'],values['Notificação de Penalidade']) == 0:
                     break
-                elif ' ' in auto:
-                    alert('Atenção', f'o auto - {auto}, seq.{i+1}, contém espaço(s) em branco')
+                if valida_campos_auto(i,auto) == 0:
                     break
-                elif '\t' in auto:
-                    alert('Atenção', f'verifique o auto - {auto}, seq.{i+1}')
+                if valida_campos_pastas(values['PastasSim'],values['PastasNão']) == 0:
                     break
+
                 else:
-                    # if not os.path.exists(diretorio + '\\' + str(auto)):
-                    #     os.mkdir(diretorio + '\\' + str(auto))
-                    # else:
-                    #     alert('Atenção', f'verifique o auto - {auto}, seq.{i+1}, O diretório já existe.')
-
-
-
                     janela_alerta = init_janela_alerta()
                     janela_form.hide()
                     janela_alerta['mensagem'].update(f' Iniciando ait {auto}')
                     janela_alerta.refresh()
                     print(f'Baixando auto - {auto}... ')
                     pesquisa_auto(navegador, auto)
-                    if event == 'Relatório Resumido':
+                    if values['Relatório Financeiro']:
+                        download_relatorio_financeiro(navegador)
+                    if values['Relatório Resumido']:
                         download_relatorio_resumido(navegador)
+                    if values['Notificação de autuação']:
+                        download_na(navegador)
+                    if values['Notificação de Penalidade']:
+                        download_np(navegador)
 
-
-                    download_na(navegador)
-
-                    download_np(navegador)
                     #df['NotificacaoNP'] = 'Ok'
-                    download_relatorio_financeiro(navegador)
+
                     print(f'Finalizado.')
                     janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
@@ -134,7 +130,6 @@ def init_form_principal():
             df.to_csv("saida.csv", encoding='utf-8')
 
 
+init_janela_apresentacao().read()
 acessa_sior(navegador)
 init_form_login(navegador)
-
-

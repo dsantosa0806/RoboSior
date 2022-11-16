@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import re
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, NoSuchElementException
 from View.alertas import alert
-## Oh Lord, forgive for what i'm about to do !
+## Oh Lord, forgive for what i'm about to Code !
 
 
 def acessa_sior(navegador):
@@ -176,6 +176,7 @@ def download_relatorio_financeiro(navegador):
 
 
 def download_na(navegador):
+    time.sleep(1)
     ## TRATAMENTO DE URL NA
     url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
     url = navegador.page_source.encode('utf-8')
@@ -197,6 +198,7 @@ def download_na(navegador):
 
 
 def download_np(navegador):
+    time.sleep(1)
     ## TRATAMENTO DE URL NA E NP
     url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
     url = navegador.page_source.encode('utf-8')
@@ -234,6 +236,6 @@ def trata_erro(navegador):
 
 def extract_info_ait(navegador):
     situacao_fase_auto_path = '//*[@id="center-pane"]/div/div/div/div[1]/div[2]/div[3]/text()'
-    situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text()
+    situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text
     return situacao_fase_auto
 
