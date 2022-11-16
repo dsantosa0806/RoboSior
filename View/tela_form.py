@@ -5,8 +5,8 @@ def init_janela_form():
     # Layout
     # sg.theme('SystemDefaultForReal')
     sg.SetOptions(background_color='#363636', text_element_background_color='#363636',
-                 element_background_color='#363636', scrollbar_color=None, input_elements_background_color='#F7F3EC',
-                 button_color=('white', '#4F4F4F'))
+                  element_background_color='#363636', scrollbar_color=None, input_elements_background_color='#F7F3EC',
+                  button_color=('white', '#4F4F4F'))
     menu = [[sg.Menu(
         [
          ['Inicio'],
@@ -18,16 +18,16 @@ def init_janela_form():
     layoutcampos = [
 
         [sg.Text('',key='Status')],
-        [sg.Text('Quais Documentos deseja baixar ?',font=('Segoe UI',12))],
+        [sg.Text('* Quais Documentos deseja baixar ?',font=('Segoe UI',12))],
         [sg.Checkbox('Relatório Financeiro', key='Relatório Financeiro', font=('Segoe UI', 10))],
         [sg.Checkbox('Relatório Resumido', key='Relatório Resumido', font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de autuação', key='Notificação de autuação',font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de Penalidade', key='Notificação de Penalidade',font=('Segoe UI',10))],
         [sg.Text('______________________________')],
-        [sg.Text('Deseja criar pastas ?', font=('Segoe UI', 12))],
+        [sg.Text('* Deseja criar pastas ?', font=('Segoe UI', 12))],
         [sg.Checkbox('Sim', key='PastasSim', font=('Segoe UI', 10)),
          sg.Checkbox('Não', key='PastasNão', font=('Segoe UI', 10))],
-        [sg.Text('Insira os autos abaixo ?',font=('Segoe UI',12)),
+        [sg.Text('* Insira os autos abaixo',font=('Segoe UI',12)),
          sg.Button('Limpar',font=('Segoe UI',10))
          ],
         [sg.Text('______________________________')],
@@ -38,8 +38,6 @@ def init_janela_form():
         [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),
          sg.Button('Sair',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
          ]
-
-        ## [sg.Image('images\Serget.png', size=(200, 200))],
     ]
 
     # Janela

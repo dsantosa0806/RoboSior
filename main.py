@@ -94,7 +94,6 @@ def init_form_principal():
             #     os.mkdir(diretorio)
             if len(auto) >= limite_array:
                 alert('Atenção','O limite de 10 autos foi atingido')
-
             for i, auto in enumerate(df['autos']):
                 if valida_campos_docs(values['Relatório Financeiro'],values['Relatório Resumido'],
                                       values['Notificação de autuação'],values['Notificação de Penalidade']) == 0:
