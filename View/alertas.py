@@ -48,7 +48,8 @@ def init_janela_alerta():
 
     return sg.Window('', finalize=True,
                      layout=layoutcampos,
-                     no_titlebar=True)
+                     no_titlebar=True,
+                     auto_close=(True,2))
 
 
 def init_janela_apresentacao():
@@ -75,6 +76,6 @@ def init_janela_apresentacao():
     return sg.Window('', finalize=True,
                      layout=layoutcampos,
                      no_titlebar=True,
-                     auto_close=(True, 6))
+                     auto_close=(True, 5))
 
 

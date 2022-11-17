@@ -13,15 +13,18 @@ def valida_campos_auto(i, auto):
         return 0
 
 
-def valida_campos_docs(relat_financeiro, relat_resumido, na, np):
-    if relat_financeiro is False and relat_resumido is False and\
+def valida_campos_docs(auto_infra, relat_financeiro, relat_resumido, na, np):
+    if auto_infra is False and\
+            relat_financeiro is False and\
+            relat_resumido is False and\
             na is False and np is False:
         alert('Atenção', 'Selecione um documento para baixar.')
         return 0
 
 
-def valida_campos_pastas(sim, não):
-    if sim is False and não is False:
+def valida_campos_pastas(sim, nao):
+    if sim is False and\
+            nao is False:
         alert('Atenção', 'Indique se você deseja criar pastas.')
         return 0
 

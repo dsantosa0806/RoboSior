@@ -17,24 +17,25 @@ def init_janela_form():
 
     layoutcampos = [
 
-        [sg.Text('',key='Status')],
-        [sg.Text('* Quais Documentos deseja baixar ?',font=('Segoe UI',12))],
+        [sg.Text('',key='Status',font=('Segoe UI',12))],
+        [sg.Text('Quais Documentos deseja baixar ? *',font=('Segoe UI',12))],
+        [sg.Checkbox('Auto de Infração', key='Auto de Infração', font=('Segoe UI', 10))],
         [sg.Checkbox('Relatório Financeiro', key='Relatório Financeiro', font=('Segoe UI', 10))],
         [sg.Checkbox('Relatório Resumido', key='Relatório Resumido', font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de autuação', key='Notificação de autuação',font=('Segoe UI',10))],
         [sg.Checkbox('Notificação de Penalidade', key='Notificação de Penalidade',font=('Segoe UI',10))],
         [sg.Text('______________________________')],
-        [sg.Text('* Deseja criar pastas ?', font=('Segoe UI', 12))],
+        [sg.Text('Deseja criar pastas ? *', font=('Segoe UI', 12))],
         [sg.Checkbox('Sim', key='PastasSim', font=('Segoe UI', 10)),
          sg.Checkbox('Não', key='PastasNão', font=('Segoe UI', 10))],
-        [sg.Text('* Insira os autos abaixo',font=('Segoe UI',12)),
+        [sg.Text('Insira o(s) número(s) auto(s) abaixo *',font=('Segoe UI',12)),
          sg.Button('Limpar',font=('Segoe UI',10))
          ],
         [sg.Text('______________________________')],
         [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10),
                       tooltip='Antes de alimentar os campos, verifique o tamanho do Nºdo Auto')],
         [sg.Text('______________________________')],
-        [sg.Output(size=(50, 10),font=('Segoe UI',10))],
+        [sg.Output(size=(50, 10),font=('Segoe UI',10),key='Output')],
         [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),
          sg.Button('Sair',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
          ]

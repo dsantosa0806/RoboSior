@@ -1,7 +1,8 @@
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
-    validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro
+    validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro, \
+    download_auto_infracao, validate_auto_exists
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
 from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
@@ -30,7 +31,6 @@ navegador = webdriver.Chrome(options=option_navegador())
 
 def init_form_login(navegador):
     janela_login = init_janela_login()
-
     while True:
         event, values = janela_login.read()
         print(event, values)
@@ -49,7 +49,7 @@ def init_form_login(navegador):
                 login(navegador,values['Usuario'],values['Senha'])
 
                 if validate_login_error(navegador):
-                    janela_login['mensagem'].update('Acesso inválido ! Verifique o usuario e senha informados.')
+                    janela_login['mensagem'].update('Acesso inválido ! Verifique o usuário e senha informados.')
                     janela_login.refresh()
                 else:
                     janela_login['mensagem'].update('Acesso Validado !')
@@ -62,9 +62,8 @@ def init_form_login(navegador):
 def init_form_principal():
     janela_form = init_janela_form()
     while True:
-
         event, values = janela_form.read()  # Ativa a Janela
-        print(event, values)
+        # print(event, values)
         if (event == sg.WINDOW_CLOSED
             or event == 'Sair'
             or event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT)\
@@ -95,7 +94,7 @@ def init_form_principal():
             if len(auto) >= limite_array:
                 alert('Atenção','O limite de 10 autos foi atingido')
             for i, auto in enumerate(df['autos']):
-                if valida_campos_docs(values['Relatório Financeiro'],values['Relatório Resumido'],
+                if valida_campos_docs(values['Auto de Infração'],values['Relatório Financeiro'],values['Relatório Resumido'],
                                       values['Notificação de autuação'],values['Notificação de Penalidade']) == 0:
                     break
                 if valida_campos_auto(i,auto) == 0:
@@ -108,8 +107,10 @@ def init_form_principal():
                     janela_form.hide()
                     janela_alerta['mensagem'].update(f' Iniciando ait {auto}')
                     janela_alerta.refresh()
-                    print(f'Baixando auto - {auto}... ')
-                    pesquisa_auto(navegador, auto)
+                    print(f'Iniciando auto - {auto}... ')
+                    pesquisa_auto(navegador,auto)
+                    if values['Auto de Infração']:
+                        download_auto_infracao(navegador)
                     if values['Relatório Financeiro']:
                         download_relatorio_financeiro(navegador)
                     if values['Relatório Resumido']:
@@ -119,9 +120,6 @@ def init_form_principal():
                     if values['Notificação de Penalidade']:
                         download_np(navegador)
 
-                    #df['NotificacaoNP'] = 'Ok'
-
-                    print(f'Finalizado.')
                     janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
 

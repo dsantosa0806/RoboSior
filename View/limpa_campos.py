@@ -11,6 +11,7 @@ def clean_fields(window):
 
 def reset_fields(event, window):
     try:
+        window.find_element('Auto de Infração').Update('')
         window.find_element('Relatório Financeiro').Update('')
         window.find_element('Relatório Resumido').Update('')
         window.find_element('Notificação de autuação').Update('')
@@ -18,6 +19,7 @@ def reset_fields(event, window):
         window.find_element('auto').Update('')
         window.find_element('PastasSim').Update('')
         window.find_element('PastasNão').Update('')
+        window.find_element('Output').Update('')
     except:
         alert('Um Erro ocorreu', 'Contate o administrador')
 

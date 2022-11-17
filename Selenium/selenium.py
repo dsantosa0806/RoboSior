@@ -21,7 +21,6 @@ def login(navegador,usuario,senha):
     cpfpath = '// *[ @ id = "UserName"]'
     senhapath = '//*[@id="Password"]'
     clickpath = '//*[@id="FormLogin"]/div[4]/div[2]/button'
-    userpath = '//*[@id="center-pane"]/div/div/div[1]/div[2]'
 
     err = True
     while err:
@@ -81,6 +80,9 @@ def pesquisa_auto(navegador,auto):
     path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
     path_details = '//*[@id="gridInfracao"]/table/tbody/tr/td[1]/a'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
+    path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
+    class_name_empty_field = 'lt-empty-grid'
+    empty_field = 'Nenhum registro encontrado!'
 
     try:
         WebDriverWait(navegador, 10).until(
@@ -109,6 +111,7 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_btn_consultar))).click()
     except TimeoutException:
         alert('Loading', 'Aguardando...')
+
     #detalhes
     try:
         WebDriverWait(navegador, 10).until(
@@ -118,17 +121,39 @@ def pesquisa_auto(navegador,auto):
         alert('Loading', 'Aguardando...')
 
 
-def validate_auto_exists(navegador):
+def validate_auto_exists(navegador, auto):
     path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
     path_auto = '//*[@id="NumeroAuto"]'
 
     try:
         navegador.find_element(By.XPATH,path_auto_empty).is_displayed()
-        alert('Error', 'Auto de infração não localizado, verifique os dados e tente novamente')
         navegador.find_element(By.XPATH,path_auto).clear()
+        alert('Atenção',f'O Auto {auto}, não existe. Verifique o número e tente novamente.')
         return True
     except NoSuchElementException:
         return False
+
+
+def download_auto_infracao(navegador):
+    time.sleep(1)
+    path_auto_infra = '//*[@id="menu_relatorio_mn_active"]/div/ul/li[1]/a'
+    path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
+
+    try:
+        WebDriverWait(navegador, 120).until(
+            EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
+    except ElementClickInterceptedException:
+        print('Travei no sexto passo, clique em abrir o menu')
+    time.sleep(1)
+    # CLIQUE PARA BAIXAR O AUTO DE INFRACAO
+    try:
+        WebDriverWait(navegador, 120).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, path_auto_infra))).click()
+        time.sleep(2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+
+    except ElementClickInterceptedException:
+        print('Travei no 7 passo, clique em Baixar Relatório o menu')
 
 
 def download_relatorio_resumido(navegador):
@@ -136,14 +161,14 @@ def download_relatorio_resumido(navegador):
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
     time.sleep(1)
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
         print('Travei no sexto passo, clique em abrir o menu')
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio))).click()
         time.sleep(
@@ -158,14 +183,14 @@ def download_relatorio_financeiro(navegador):
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
     time.sleep(1)
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
         alert('Loading', 'Aguardando Relatório Financeiro...')
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio_financeiro))).click()
         time.sleep(
