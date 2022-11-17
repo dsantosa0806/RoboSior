@@ -9,7 +9,7 @@ from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
 
-from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas
+from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas, valida_campos_senha
 
 
 def option_navegador():
@@ -42,9 +42,7 @@ def init_form_login(navegador):
         if event == "Validar":
             janela_login['mensagem'].update('')
             janela_login.refresh()
-            if values['Usuario'] == '' or values['Senha'] == '':
-                janela_login['mensagem'].update('Atenção ! Verifique o usuario e senha informados.')
-            elif '' in values['Senha'] == '':
+            if valida_campos_senha(values['Usuario'], values['Senha']):
                 janela_login['mensagem'].update('Atenção ! Verifique o usuario e senha informados.')
             else:
                 ## janela_login['mensagem'].update('Logado !')
@@ -108,10 +106,14 @@ def init_form_principal():
                 else:
                     janela_alerta = init_janela_alerta()
                     janela_form.hide()
-                    janela_alerta['mensagem'].update(f' Iniciando ait {auto}')
+                    janela_alerta['mensagem'].update(f' Iniciando o auto {auto}')
                     janela_alerta.refresh()
                     print(f'Iniciando auto - {auto}... ')
-                    pesquisa_auto(navegador,auto)
+                    if pesquisa_auto(navegador,auto):
+                        janela_alerta.hide()
+                        alert('Erro',f'O auto de infração {auto}, não foi localizado. Verifique a lista e tente novamente')
+                        acessa_tela_incial_auto(navegador)
+                        break
                     if values['Auto de Infração']:
                         janela_alerta.hide()
                         download_auto_infracao(navegador)

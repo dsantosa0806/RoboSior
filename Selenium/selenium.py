@@ -135,7 +135,10 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_details))).click()
 
     except TimeoutException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        if navegador.find_element(By.XPATH,path_auto_empty).is_displayed():
+            return True
+        else:
+            ('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def validate_auto_exists(navegador, auto):
@@ -167,7 +170,7 @@ def download_auto_infracao(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.XPATH, path_auto_infra))).click()
-        time.sleep(2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+        time.sleep(7)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
 
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')

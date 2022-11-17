@@ -29,6 +29,19 @@ def valida_campos_pastas(sim, nao):
         return 0
 
 
+def valida_campos_senha(usuario, senha):
+    if usuario == '' or senha == '':
+        return True
+    elif ' ' in senha:
+        return True
+    elif ' ' in usuario:
+        return True
+    elif '\n' in senha:
+        return True
+    elif '\n' in usuario:
+        return True
+
+
 
 
 
