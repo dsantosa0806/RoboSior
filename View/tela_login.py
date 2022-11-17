@@ -6,7 +6,7 @@ def init_janela_login():
     # Layout
     sg.SetOptions(background_color='#363636', text_element_background_color='#363636',
                   element_background_color='#363636', scrollbar_color=None, input_elements_background_color='#F7F3EC',
-                  button_color=('white', '#4F4F4F'))
+                  button_color=('black', '#4F4F4F'))
     # sg.theme('SystemDefaultForReal')
     layoutcampos = [
 
@@ -19,10 +19,10 @@ def init_janela_login():
         [sg.Text('CPF ou E-mail',size=(20, 0),font=('Segoe UI',8))], # Usuario
         [sg.Input(size=(50, 0), key='Usuario',font=('Segoe UI',10),tooltip='Usuario Sior')],  # Usuario
 
-        [sg.Text('Senha (SIOR)', size=(20, 0),font=('Segoe UI',8))],# Senha
+        [sg.Text('Senha', size=(20, 0),font=('Segoe UI',8))],# Senha
         [sg.Input(size=(50, 0), key='Senha', password_char='*',font=('Segoe UI',10))],  # Senha
-        [sg.Button('Validar', focus=True, button_color='red', font=('Segoe UI', 10))],
-        [sg.Text('',key='mensagem', size=(50, 0), font=('Segoe UI', 8))],  # Usuario
+        [sg.Button('Validar', focus=True, button_color='yellow', font=('Segoe UI', 10))],
+        [sg.Text('',key='mensagem', size=(50, 0), font=('Segoe UI', 8))]
 
     ]
 

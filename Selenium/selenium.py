@@ -10,9 +10,12 @@ from View.alertas import alert
 
 
 def acessa_sior(navegador):
-    #Acesso a tela de login
-    url_login = 'http://servicos.dnit.gov.br/sior/Account/Login/?ReturnUrl=%2Fsior%2F'
-    navegador.get(url_login)
+    try:
+        #Acesso a tela de login
+        url_login = 'http://servicos.dnit.gov.br/sior/Account/Login/?ReturnUrl=%2Fsior%2F'
+        navegador.get(url_login)
+    except:
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def login(navegador,usuario,senha):
@@ -26,13 +29,13 @@ def login(navegador,usuario,senha):
     while err:
 
         try:
-            WebDriverWait(navegador, 120).until(
+            WebDriverWait(navegador, 15).until(
                 EC.presence_of_element_located(
                     (By.XPATH, cpfpath))).send_keys(username)
-            WebDriverWait(navegador, 120).until(
+            WebDriverWait(navegador, 15).until(
                 EC.presence_of_element_located(
                     (By.XPATH, senhapath))).send_keys(userpass)
-            WebDriverWait(navegador, 120).until(
+            WebDriverWait(navegador, 15).until(
                 EC.element_to_be_clickable(
                     (By.XPATH, clickpath))).click()
 
@@ -41,7 +44,7 @@ def login(navegador,usuario,senha):
             err = False
 
         except TimeoutException:
-            alert('Loading', 'Aguardando...')
+            alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def user_last_login(navegador):
@@ -56,12 +59,25 @@ def validate_login_error(navegador):
 
     try:
         navegador.find_element(By.XPATH,login_error).is_displayed()
-
         navegador.find_element(By.XPATH,cpfpath).clear()
         navegador.find_element(By.XPATH,senhapath).clear()
         return True
     except NoSuchElementException:
         return False
+
+
+def validate_logado(navegador):
+    logado = '//*[@id="center-pane"]/div/div/div[1]/div[2]'
+    try:
+        WebDriverWait(navegador, 5).until(
+            EC.presence_of_element_located(
+                (By.XPATH, logado))).is_displayed()
+        valor = navegador.find_element(By.XPATH, logado).text
+        alert('Acesso', f'Bem-vindo(a), {valor}')
+        return True
+
+    except TimeoutException:
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def acessa_tela_incial_auto(navegador):
@@ -70,7 +86,7 @@ def acessa_tela_incial_auto(navegador):
     try:
         navegador.get(url_base)
     except:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def pesquisa_auto(navegador,auto):
@@ -88,21 +104,22 @@ def pesquisa_auto(navegador,auto):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_auto))).clear()
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
     # INPUT AIT
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_auto))).send_keys(input_ait)
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+
     # DESABILITA FILTRO AUTO
     if navegador.find_element(By.XPATH,path_btn_closefilter).is_displayed():
         try:
             WebDriverWait(navegador, 10).until(
                 EC.element_to_be_clickable((By.XPATH, path_btn_closefilter))).click()
         except TimeoutException:
-            alert('Loading', 'Aguardando...')
+            alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
     else:
         pass
     # REALIZA A CONSULTA
@@ -110,7 +127,7 @@ def pesquisa_auto(navegador,auto):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_btn_consultar))).click()
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
     #detalhes
     try:
@@ -118,7 +135,7 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_details))).click()
 
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def validate_auto_exists(navegador, auto):
@@ -140,20 +157,20 @@ def download_auto_infracao(navegador):
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
 
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
-        print('Travei no sexto passo, clique em abrir o menu')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
     time.sleep(1)
     # CLIQUE PARA BAIXAR O AUTO DE INFRACAO
     try:
-        WebDriverWait(navegador, 120).until(
+        WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.XPATH, path_auto_infra))).click()
         time.sleep(2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
 
     except ElementClickInterceptedException:
-        print('Travei no 7 passo, clique em Baixar Relatório o menu')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def download_relatorio_resumido(navegador):
@@ -164,7 +181,7 @@ def download_relatorio_resumido(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
-        print('Travei no sexto passo, clique em abrir o menu')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
@@ -172,10 +189,10 @@ def download_relatorio_resumido(navegador):
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio))).click()
         time.sleep(
-            3)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+            2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
 
     except ElementClickInterceptedException:
-        print('Travei no 7 passo, clique em Baixar Relatório o menu')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def download_relatorio_financeiro(navegador):
@@ -186,7 +203,7 @@ def download_relatorio_financeiro(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
-        alert('Loading', 'Aguardando Relatório Financeiro...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
@@ -194,10 +211,10 @@ def download_relatorio_financeiro(navegador):
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio_financeiro))).click()
         time.sleep(
-            3)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+            2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
 
     except ElementClickInterceptedException:
-        alert('Loading', 'Aguardando Relatório Financeiro...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def download_na(navegador):
@@ -219,7 +236,7 @@ def download_na(navegador):
         trata_erro(navegador)
 
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def download_np(navegador):
@@ -242,7 +259,7 @@ def download_np(navegador):
         trata_erro(navegador)
 
     except TimeoutException:
-        alert('Loading', 'Aguardando...')
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def trata_erro(navegador):

@@ -1,5 +1,4 @@
 from View.alertas import alert
-from View.alertas import alert, progress_bar
 
 
 def clean_fields(window):

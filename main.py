@@ -2,7 +2,7 @@ import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro, \
-    download_auto_infracao, validate_auto_exists
+    download_auto_infracao, validate_auto_exists, validate_logado
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
 from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
@@ -44,6 +44,8 @@ def init_form_login(navegador):
             janela_login.refresh()
             if values['Usuario'] == '' or values['Senha'] == '':
                 janela_login['mensagem'].update('Atenção ! Verifique o usuario e senha informados.')
+            elif '' in values['Senha'] == '':
+                janela_login['mensagem'].update('Atenção ! Verifique o usuario e senha informados.')
             else:
                 ## janela_login['mensagem'].update('Logado !')
                 login(navegador,values['Usuario'],values['Senha'])
@@ -52,6 +54,7 @@ def init_form_login(navegador):
                     janela_login['mensagem'].update('Acesso inválido ! Verifique o usuário e senha informados.')
                     janela_login.refresh()
                 else:
+                    validate_logado(navegador)
                     janela_login['mensagem'].update('Acesso Validado !')
                     janela_login.refresh()
                     acessa_tela_incial_auto(navegador)
@@ -110,14 +113,19 @@ def init_form_principal():
                     print(f'Iniciando auto - {auto}... ')
                     pesquisa_auto(navegador,auto)
                     if values['Auto de Infração']:
+                        janela_alerta.hide()
                         download_auto_infracao(navegador)
                     if values['Relatório Financeiro']:
+                        janela_alerta.hide()
                         download_relatorio_financeiro(navegador)
                     if values['Relatório Resumido']:
+                        janela_alerta.hide()
                         download_relatorio_resumido(navegador)
                     if values['Notificação de autuação']:
+                        janela_alerta.hide()
                         download_na(navegador)
                     if values['Notificação de Penalidade']:
+                        janela_alerta.hide()
                         download_np(navegador)
 
                     janela_alerta.close()

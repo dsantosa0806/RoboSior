@@ -28,10 +28,9 @@ def init_janela_form():
         [sg.Text('Deseja criar pastas ? *', font=('Segoe UI', 12))],
         [sg.Checkbox('Sim', key='PastasSim', font=('Segoe UI', 10)),
          sg.Checkbox('Não', key='PastasNão', font=('Segoe UI', 10))],
-        [sg.Text('Insira o(s) número(s) auto(s) abaixo *',font=('Segoe UI',12)),
-         sg.Button('Limpar',font=('Segoe UI',10))
-         ],
         [sg.Text('______________________________')],
+        [sg.Text('Insira o(s) número(s) auto(s) abaixo *',font=('Segoe UI',12))],
+        [sg.Button('Limpar', font=('Segoe UI', 10))],
         [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10),
                       tooltip='Antes de alimentar os campos, verifique o tamanho do Nºdo Auto')],
         [sg.Text('______________________________')],
