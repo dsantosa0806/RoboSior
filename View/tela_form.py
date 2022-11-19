@@ -17,7 +17,6 @@ def init_janela_form():
 
     layoutcampos = [
 
-        [sg.Text('',key='Status',font=('Segoe UI',12))],
         [sg.Text('Quais Documentos deseja baixar ? *',font=('Segoe UI',12))],
         [sg.Checkbox('Auto de Infração', key='Auto de Infração', font=('Segoe UI', 10))],
         [sg.Checkbox('Relatório Financeiro', key='Relatório Financeiro', font=('Segoe UI', 10))],

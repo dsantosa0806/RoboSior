@@ -1,8 +1,8 @@
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
-    validate_login_error, download_na, download_np, user_last_login, download_relatorio_financeiro, \
-    download_auto_infracao, validate_auto_exists, validate_logado
+    validate_login_error, download_na, download_np, download_relatorio_financeiro, \
+    download_auto_infracao, validate_logado
 from View.limpa_campos import clean_fields, reset_fields
 from View.tela_login import init_janela_login
 from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
@@ -51,8 +51,10 @@ def init_form_login(navegador):
                 if validate_login_error(navegador):
                     janela_login['mensagem'].update('Acesso inválido ! Verifique o usuário e senha informados.')
                     janela_login.refresh()
+                elif validate_logado(navegador) == 0:
+                    janela_login.close()
+                    navegador.quit()
                 else:
-                    validate_logado(navegador)
                     janela_login['mensagem'].update('Acesso Validado !')
                     janela_login.refresh()
                     acessa_tela_incial_auto(navegador)
@@ -109,11 +111,13 @@ def init_form_principal():
                     janela_alerta['mensagem'].update(f' Iniciando o auto {auto}')
                     janela_alerta.refresh()
                     print(f'Iniciando auto - {auto}... ')
+
                     if pesquisa_auto(navegador,auto):
                         janela_alerta.hide()
                         alert('Erro',f'O auto de infração {auto}, não foi localizado. Verifique a lista e tente novamente')
                         acessa_tela_incial_auto(navegador)
                         break
+
                     if values['Auto de Infração']:
                         janela_alerta.hide()
                         download_auto_infracao(navegador)

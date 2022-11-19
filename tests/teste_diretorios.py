@@ -1,17 +1,39 @@
 import os
+import shutil
 
-diretorio = 'teste_Pasta'
-if not os.path.exists(diretorio):
-    os.mkdir(diretorio)
+# auto_criado = 'Auto_Do_Loop'
+# download_path = fr'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos\{auto_criado}'
+#
+#
+# if not os.path.exists(auto_criado):
+#     os.mkdir(auto_criado)
+#
+# diretorio_atual = download_path
+# diretorio_destino = r'C:\autos'
+#
+# for i in os.listdir(download_path):
+#     print(i)
 
-diretorio_atual = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\tests\teste_Pasta'
-diretorio_destino = r'C:\Autos'
 
-print(diretorio_atual)
+# shutil.move(diretorio_atual,diretorio_destino) # Usar Shutil para mover a pasta
+
+
+# for i in os.listdir():
+#     print(i)
+
+
+# Testes
+
+caminho_atual = os.getcwd()
+print(caminho_atual)
+
+
+novo_caminho = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+os.chdir(novo_caminho)
+print(os.getcwd())
 
 for i in os.listdir():
-    os.rename(diretorio_atual,diretorio_destino + diretorio)
-
+    print(i)
 
 
 

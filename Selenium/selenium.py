@@ -47,11 +47,6 @@ def login(navegador,usuario,senha):
             alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
-def user_last_login(navegador):
-    userpath = '//*[@id="center-pane"]/div/div/div[1]/div[2]'
-    return navegador.find_element(By.XPATH,userpath).text()
-
-
 def validate_login_error(navegador):
     cpfpath = '// *[ @ id = "UserName"]'
     senhapath = '//*[@id="Password"]'
@@ -69,7 +64,7 @@ def validate_login_error(navegador):
 def validate_logado(navegador):
     logado = '//*[@id="center-pane"]/div/div/div[1]/div[2]'
     try:
-        WebDriverWait(navegador, 5).until(
+        WebDriverWait(navegador, 10).until(
             EC.presence_of_element_located(
                 (By.XPATH, logado))).is_displayed()
         valor = navegador.find_element(By.XPATH, logado).text
@@ -77,7 +72,9 @@ def validate_logado(navegador):
         return True
 
     except TimeoutException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert('Opss', 'O SIOR apresentou instabilidade, a aplicação será encerrada.'
+                      ' Por favor reinicie a aplicação e tente novamente')
+        return 0
 
 
 def acessa_tela_incial_auto(navegador):
@@ -101,10 +98,11 @@ def pesquisa_auto(navegador,auto):
     empty_field = 'Nenhum registro encontrado!'
 
     try:
-        WebDriverWait(navegador, 10).until(
+        WebDriverWait(navegador, 60).until(
             EC.element_to_be_clickable((By.XPATH, path_auto))).clear()
     except TimeoutException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert('Opss', 'O SIOR apresentou instabilidade, a aplicação será encerrada.'
+                      ' Por favor reinicie a aplicação e tente novamente')
 
     # INPUT AIT
     try:
@@ -139,19 +137,6 @@ def pesquisa_auto(navegador,auto):
             return True
         else:
             ('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
-
-
-def validate_auto_exists(navegador, auto):
-    path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
-    path_auto = '//*[@id="NumeroAuto"]'
-
-    try:
-        navegador.find_element(By.XPATH,path_auto_empty).is_displayed()
-        navegador.find_element(By.XPATH,path_auto).clear()
-        alert('Atenção',f'O Auto {auto}, não existe. Verifique o número e tente novamente.')
-        return True
-    except NoSuchElementException:
-        return False
 
 
 def download_auto_infracao(navegador):
@@ -221,47 +206,64 @@ def download_relatorio_financeiro(navegador):
 
 
 def download_na(navegador):
-    time.sleep(1)
-    ## TRATAMENTO DE URL NA
-    url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
-    url = navegador.page_source.encode('utf-8')
-    soup = BeautifulSoup(url, 'html.parser')
-    elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
-    padrao_na = 'DownloadSegundaViaNA/'
-    posicao_na = elementos.find(padrao_na)
-    lenght_na = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
-    url_download_na = re.sub('amp;',"",elementos[posicao_na:posicao_na + lenght_na])
+    # time.sleep(1)
+    # ## TRATAMENTO DE URL NA
+    # url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
+    # url = navegador.page_source.encode('utf-8')
+    # soup = BeautifulSoup(url, 'html.parser')
+    # elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
+    # padrao_na = 'DownloadSegundaViaNA/'
+    # posicao_na = elementos.find(padrao_na)
+    # lenght_na = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
+    # url_download_na = re.sub('amp;',"",elementos[posicao_na:posicao_na + lenght_na])
+    #
+    #
+    # # EXECUTANDO O DOWNLOAD NA
+    # try:
+    #     navegador.get(url_base_sior + url_download_na)  # # DOWNLOAD NA
+    #     time.sleep(2)
+    #     trata_erro(navegador)
+    #
+    # except TimeoutException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
-    # EXECUTANDO O DOWNLOAD NA
+    path_download_na = '//*[@id="tabInfracao-1"]/fieldset[1]/div[1]/div[3]/a'
     try:
-        navegador.get(url_base_sior + url_download_na)  # # DOWNLOAD NA
-        time.sleep(2)
-        trata_erro(navegador)
-
-    except TimeoutException:
+        WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_download_na))).click()
+        time.sleep(3)
+    except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
 def download_np(navegador):
-    time.sleep(1)
-    ## TRATAMENTO DE URL NA E NP
-    url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
-    url = navegador.page_source.encode('utf-8')
-    soup = BeautifulSoup(url, 'html.parser')
-    elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
-    padrao_np = 'DownloadSegundaViaNP/'
-    posicao_np = elementos.find(padrao_np)
-    lenght_np = len('DownloadSegundaViaNP/107851973?numeroAuto=D008521814&amp;indicadorComprovacao=2101')
-    url_download_np = re.sub('amp;',"",elementos[posicao_np:posicao_np + lenght_np])
+    # time.sleep(1)
+    # ## TRATAMENTO DE URL NA E NP
+    # url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
+    # url = navegador.page_source.encode('utf-8')
+    # soup = BeautifulSoup(url, 'html.parser')
+    # elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
+    # padrao_np = 'DownloadSegundaViaNP/'
+    # posicao_np = elementos.find(padrao_np)
+    # lenght_np = len('DownloadSegundaViaNP/107851973?numeroAuto=D008521814&amp;indicadorComprovacao=2101')
+    # url_download_np = re.sub('amp;',"",elementos[posicao_np:posicao_np + lenght_np])
+    #
+    # # EXECUTANDO O DOWNLOAD NP
+    # try:
+    #
+    #     navegador.get(url_base_sior + url_download_np)  # # # DOWNLOAD NP
+    #     time.sleep(2)
+    #     trata_erro(navegador)
+    #
+    # except TimeoutException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
-    # EXECUTANDO O DOWNLOAD NP
+    path_download_np = '//*[@id="tabInfracao-1"]/fieldset[2]/div[1]/div[3]/a'
     try:
-
-        navegador.get(url_base_sior + url_download_np)  # # # DOWNLOAD NP
-        time.sleep(2)
-        trata_erro(navegador)
-
-    except TimeoutException:
+        WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_download_np))).click()
+        time.sleep(3)
+    except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
 
 
