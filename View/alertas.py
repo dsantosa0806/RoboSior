@@ -1,3 +1,4 @@
+import os
 import PySimpleGUI as sg
 
 
@@ -6,7 +7,6 @@ def alert(tipo, alerta):
 
 
 def init_janela_alerta():
-
     # Layout
     sg.SetOptions(background_color='#363636', text_element_background_color='#363636',
                   element_background_color='#363636', scrollbar_color=None, input_elements_background_color='#F7F3EC',
@@ -28,7 +28,8 @@ def init_janela_alerta():
     return sg.Window('', finalize=True,
                      layout=layoutcampos,
                      no_titlebar=True,
-                     auto_close=(True,4))
+                     auto_close=True,
+                     auto_close_duration=4)
 
 
 def init_janela_apresentacao():
@@ -55,6 +56,7 @@ def init_janela_apresentacao():
     return sg.Window('', finalize=True,
                      layout=layoutcampos,
                      no_titlebar=True,
-                     auto_close=(True, 5))
+                     auto_close=True,
+                     auto_close_duration=4)
 
 
