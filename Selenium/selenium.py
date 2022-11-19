@@ -20,7 +20,7 @@ def acessa_sior(navegador):
 
 def login(navegador,usuario,senha):
     username = usuario
-    userpass = senha #'Trabalho@2021'
+    userpass = senha
     cpfpath = '// *[ @ id = "UserName"]'
     senhapath = '//*[@id="Password"]'
     clickpath = '//*[@id="FormLogin"]/div[4]/div[2]/button'
