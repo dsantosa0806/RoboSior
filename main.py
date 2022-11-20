@@ -19,8 +19,6 @@ from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_ca
 
 def option_navegador():
 
-
-
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless") # Oculta o navegador
     download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos' # PROBLEMA

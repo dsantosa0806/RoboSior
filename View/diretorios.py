@@ -22,7 +22,7 @@ def diretorios_exec(auto):
 
     except ValueError:
         shutil.rmtree(pasta_loop)
-        alert('Erro' ,'A Pasta já existe e será deletada. Tente novamente!')
+        alert('Erro','A Pasta já existe e será deletada. Tente novamente!')
         os.mkdir(pasta_loop)
     try:
         for arquivo in os.listdir():
