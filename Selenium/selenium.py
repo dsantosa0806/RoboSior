@@ -155,21 +155,10 @@ def download_auto_infracao(navegador):
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
+        time.sleep(10)
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
-    time.sleep(1)
-    # CLIQUE PARA BAIXAR O AUTO DE INFRACAO
-    try:
-        WebDriverWait(navegador, 10).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, path_auto_infra))).click()
-        time.sleep(10)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
-
-    except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
-        exit()
-
 
 
 def download_relatorio_resumido(navegador):
@@ -302,4 +291,16 @@ def extract_info_ait(navegador):
     situacao_fase_auto_path = '//*[@id="center-pane"]/div/div/div/div[1]/div[2]/div[3]/text()'
     situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text
     return situacao_fase_auto
+
+
+def aguarda_download(navegador):
+    path_padrao = '//*[@id="btnRefresh"]'
+    path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
+    try:
+        WebDriverWait(navegador, 60).until(
+            EC.element_to_be_clickable((By.XPATH, path_padrao))).is_displayed()
+        time.sleep(2) # Este Delay é importante para dar tempo de percorrer o que existe na pasta de docs baixados
+    except ElementClickInterceptedException:
+        alert('Erro', 'O SIOR apresentou instabilidade, E o download não pode ser Finalizado. Reinicie a aplicação e tente novamente ')
+        exit()
 

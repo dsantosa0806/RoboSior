@@ -58,6 +58,3 @@ def init_help_form():
                      layout=final_layout,
                      no_titlebar=True,
                      )
-
-janela = init_help_form()
-janela.read()

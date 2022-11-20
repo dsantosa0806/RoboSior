@@ -1,6 +1,3 @@
-import os
-import shutil
-
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
@@ -156,7 +153,6 @@ def init_form_principal():
                         diretorios_exec(auto)
                     else:
                         no_diretorio_exec()
-
                     acessa_tela_incial_auto(navegador)
 
             # df.to_csv("relatorio.csv", encoding='utf-8')
