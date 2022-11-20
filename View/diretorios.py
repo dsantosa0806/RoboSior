@@ -1,6 +1,6 @@
 import os
 import shutil
-from View.alertas import alert
+from View.alertas import alert, alert_notify
 
 
 def diretorios_exec(auto):
@@ -70,4 +70,11 @@ def clean_diretorio_autos():
         alert('erro', f'Erro ao Apagar os arquivos para a pasta final{ValueError}')
 
 
+def verify_downloads(values):
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    while True:
+        if len(os.listdir(download_path)) < str(values).count('True')-1: # Não conta o True de criar pasta
+            alert_notify('Aviso','Aguardando a finalização do download.')
+        else:
+            break
 

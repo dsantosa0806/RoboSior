@@ -4,7 +4,7 @@ from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_inc
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado
 from View.ajuda import init_help_form
-from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos
+from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos, verify_downloads
 from View.limpa_campos import clean_fields, reset_fields
 from View.tabela import init_table_form
 from View.tela_login import init_janela_login
@@ -68,7 +68,7 @@ def init_form_principal():
     janela_form = init_janela_form()
     while True:
         event, values = janela_form.read()  # Ativa a Janela
-        # print(event, values)
+        # print(values)
         if (event == sg.WINDOW_CLOSED
             or event == 'Sair'
             or event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT)\
@@ -127,7 +127,6 @@ def init_form_principal():
                     break
                 else:
                     janela_form.hide()
-                    print(f'Iniciando auto - {auto}... ')
 
                     if pesquisa_auto(navegador,auto):
                         alert('Erro',f'O auto de infração {auto}, não foi localizado. Verifique a lista e tente novamente')
@@ -149,10 +148,14 @@ def init_form_principal():
                     if values['Notificação de Penalidade']:
                         alert_notify('Iniciando Notificação de Penalidade', f'{auto}')
                         download_np(navegador)
+
+                    verify_downloads(values)
+
                     if values['PastasSim']:
                         diretorios_exec(auto)
                     else:
                         no_diretorio_exec()
+                    print(f'Auto - {auto} - Finalizado! ')
                     acessa_tela_incial_auto(navegador)
 
             # df.to_csv("relatorio.csv", encoding='utf-8')

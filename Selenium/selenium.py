@@ -80,8 +80,8 @@ def validate_logado(navegador):
 
 
 def acessa_tela_incial_auto(navegador):
-    url_base = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/?SituacoesInfracaoSelecionadas=1'
     # Acessa a tela da notificação da autuação
+    url_base = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/?SituacoesInfracaoSelecionadas=1'
     try:
         navegador.get(url_base)
     except ValueError:
@@ -95,10 +95,7 @@ def pesquisa_auto(navegador,auto):
     path_btn_closefilter = '//*[@id="SituacoesInfracaoSelecionadas_taglist"]/li/span[2]'
     path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
     path_details = '//*[@id="gridInfracao"]/table/tbody/tr/td[1]/a'
-    path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
     path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
-    class_name_empty_field = 'lt-empty-grid'
-    empty_field = 'Nenhum registro encontrado!'
 
     try:
         WebDriverWait(navegador, 60).until(
@@ -138,7 +135,6 @@ def pesquisa_auto(navegador,auto):
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_details))).click()
-
     except TimeoutException:
         if navegador.find_element(By.XPATH,path_auto_empty).is_displayed():
             return True
@@ -148,14 +144,14 @@ def pesquisa_auto(navegador,auto):
 
 
 def download_auto_infracao(navegador):
-    time.sleep(1)
     path_auto_infra = '//*[@id="menu_relatorio_mn_active"]/div/ul/li[1]/a'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
 
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
-        time.sleep(10)
+        WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_auto_infra))).click()
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
@@ -164,7 +160,6 @@ def download_auto_infracao(navegador):
 def download_relatorio_resumido(navegador):
     path_id_relatorio = 'btnExportarRelatorioResumido'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
-    time.sleep(1)
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
@@ -177,9 +172,6 @@ def download_relatorio_resumido(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio))).click()
-        time.sleep(
-            2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
-
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
@@ -188,7 +180,6 @@ def download_relatorio_resumido(navegador):
 def download_relatorio_financeiro(navegador):
     path_id_relatorio_financeiro = 'btnExportarRelatorioFinanceiro'
     path_menu_relat = '//*[@id="menu_relatorio"]/li/span'
-    time.sleep(1)
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
@@ -201,73 +192,26 @@ def download_relatorio_financeiro(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio_financeiro))).click()
-        time.sleep(
-            2)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
-
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 
 def download_na(navegador):
-    # time.sleep(1)
-    # ## TRATAMENTO DE URL NA
-    # url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
-    # url = navegador.page_source.encode('utf-8')
-    # soup = BeautifulSoup(url, 'html.parser')
-    # elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
-    # padrao_na = 'DownloadSegundaViaNA/'
-    # posicao_na = elementos.find(padrao_na)
-    # lenght_na = len('DownloadSegundaViaNA/107851973?numeroAuto=D008521814&ampindicadorComprovacao=2101')
-    # url_download_na = re.sub('amp;',"",elementos[posicao_na:posicao_na + lenght_na])
-    #
-    #
-    # # EXECUTANDO O DOWNLOAD NA
-    # try:
-    #     navegador.get(url_base_sior + url_download_na)  # # DOWNLOAD NA
-    #     time.sleep(2)
-    #     trata_erro(navegador)
-    #
-    # except TimeoutException:
-    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
-
     path_download_na = '//*[@id="tabInfracao-1"]/fieldset[1]/div[1]/div[3]/a'
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_download_na))).click()
-        time.sleep(3)
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 
 def download_np(navegador):
-    # time.sleep(1)
-    # ## TRATAMENTO DE URL NA E NP
-    # url_base_sior = 'https://servicos.dnit.gov.br/sior/Infracao/ConsultaAutoInfracao/'
-    # url = navegador.page_source.encode('utf-8')
-    # soup = BeautifulSoup(url, 'html.parser')
-    # elementos = str(soup.find_all("div", attrs={"class": 'lt-col-3'}))  # Class padrão da Na SIOR
-    # padrao_np = 'DownloadSegundaViaNP/'
-    # posicao_np = elementos.find(padrao_np)
-    # lenght_np = len('DownloadSegundaViaNP/107851973?numeroAuto=D008521814&amp;indicadorComprovacao=2101')
-    # url_download_np = re.sub('amp;',"",elementos[posicao_np:posicao_np + lenght_np])
-    #
-    # # EXECUTANDO O DOWNLOAD NP
-    # try:
-    #
-    #     navegador.get(url_base_sior + url_download_np)  # # # DOWNLOAD NP
-    #     time.sleep(2)
-    #     trata_erro(navegador)
-    #
-    # except TimeoutException:
-    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
-
     path_download_np = '//*[@id="tabInfracao-1"]/fieldset[2]/div[1]/div[3]/a'
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_download_np))).click()
-        time.sleep(3)
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
@@ -292,15 +236,4 @@ def extract_info_ait(navegador):
     situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text
     return situacao_fase_auto
 
-
-def aguarda_download(navegador):
-    path_padrao = '//*[@id="btnRefresh"]'
-    path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
-    try:
-        WebDriverWait(navegador, 60).until(
-            EC.element_to_be_clickable((By.XPATH, path_padrao))).is_displayed()
-        time.sleep(2) # Este Delay é importante para dar tempo de percorrer o que existe na pasta de docs baixados
-    except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, E o download não pode ser Finalizado. Reinicie a aplicação e tente novamente ')
-        exit()
 
