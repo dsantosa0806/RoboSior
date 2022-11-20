@@ -9,9 +9,10 @@ def init_janela_form():
                   button_color=('white', '#4F4F4F'))
     menu = [[sg.Menu(
         [
-         ['Inicio'],
+         ['Inicio',['Sair']],
          ['Tabela', ['Dados']],
-         ['Ajuda']]
+         ['Ajuda',['Requisitos']],
+        ]
         )]
     ]
 
@@ -25,24 +26,23 @@ def init_janela_form():
         [sg.Checkbox('Notificação de Penalidade', key='Notificação de Penalidade',font=('Segoe UI',10))],
         [sg.Text('______________________________')],
         [sg.Text('Deseja criar pastas ? *', font=('Segoe UI', 12))],
-        [sg.Checkbox('Sim', key='PastasSim', font=('Segoe UI', 10)),
-         sg.Checkbox('Não', key='PastasNão', font=('Segoe UI', 10))],
+        [sg.Radio('Sim', "RADIO1", key='PastasSim', font=('Segoe UI', 10)),
+         sg.Radio('Não', "RADIO1", key='PastasNão', font=('Segoe UI', 10))],
         [sg.Text('______________________________')],
-        [sg.Text('Insira o(s) número(s) auto(s) abaixo *',font=('Segoe UI',12))],
-        [sg.Button('Limpar', font=('Segoe UI', 10))],
+        [sg.Text('Insira os números dos autos abaixo *',font=('Segoe UI',12),tooltip='Limite de 10 autos por vez.')],
         [sg.Multiline(size=(30, 10),key='auto', font=('Segoe UI',10),
-                      tooltip='Antes de alimentar os campos, verifique o tamanho do Nºdo Auto')],
+                      tooltip='Antes de alimentar os campos, verifique o tamanho do Nº do Auto.')],
+        [sg.Button('Limpar', font=('Segoe UI', 10))],
         [sg.Text('______________________________')],
         [sg.Output(size=(50, 10),font=('Segoe UI',10),key='Output')],
-        [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),
-         sg.Button('Sair',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
+        [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
          ]
     ]
-
+# ,
+    #          sg.Button('Sair',font=('Segoe UI',10))
     # Janela
     return sg.Window('Baixar Documentos',
                        enable_close_attempted_event=True,
                        finalize=True,
                        icon=r'images\robot.ico').layout(menu + layoutcampos)
-
 

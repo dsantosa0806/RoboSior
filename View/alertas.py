@@ -6,6 +6,9 @@ def alert(tipo, alerta):
     sg.popup(tipo, alerta,button_color=('yellow', '#4F4F4F'), icon=r'images\robot.ico',no_titlebar=True)
 
 
+def alert_notify(tipo, alerta):
+    sg.SystemTray.notify(tipo, alerta, display_duration_in_ms=1500, fade_in_duration=2)
+
 def init_janela_alerta():
     # Layout
     sg.SetOptions(background_color='#363636', text_element_background_color='#363636',
@@ -44,7 +47,7 @@ def init_janela_apresentacao():
 
         [[sg.Col([[sg.Text('Iniciando a aplicação ! por favor aguarde...',
                            grab=True,font=('Segoe UI', 8))]], pad=(0, 0)),
-          sg.Col([[sg.Text(sg.SYMBOL_CIRCLE, enable_events=True, key='-X-')]],  # '❎'
+          sg.Col([[sg.Text(sg.SYMBOL_CIRCLE, enable_events=False, key='-X-')]],  # '❎'
                  element_justification='r', grab=True, pad=(0, 0), expand_x=True)],
          [sg.HorizontalSeparator()]],
         [sg.Image('images\Serget.png', size=(300, 300))],

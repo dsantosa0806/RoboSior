@@ -6,11 +6,12 @@ from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado
-from View.diretorios import diretorios_exec, no_diretorio_exec
+from View.ajuda import init_help_form
+from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos
 from View.limpa_campos import clean_fields, reset_fields
 from View.tabela import init_table_form
 from View.tela_login import init_janela_login
-from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
+from View.alertas import alert, init_janela_alerta, init_janela_apresentacao, alert_notify
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
 from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas, valida_campos_senha
@@ -91,6 +92,14 @@ def init_form_principal():
                 tabela.close()
                 janela_form.un_hide()
 
+## Botao Ajuda Requisitos
+        if event == "Requisitos":
+            janela_form.hide()
+            ajuda = init_help_form()
+            event_table, values_table = ajuda.read()
+            if event_table == "voltar":
+                ajuda.close()
+                janela_form.un_hide()
 
 ## Botao limpar
         if event == "Limpar":
@@ -100,6 +109,7 @@ def init_form_principal():
             reset_fields(event,janela_form)
 ## Botao Iniciar
         if event == "Iniciar":
+            clean_diretorio_autos()
             auto = values['auto'].split('\n')
             #criação do DF
             df = pd.DataFrame(data=auto, columns=['autos'])
@@ -120,43 +130,38 @@ def init_form_principal():
                     break
 
                 else:
-                    janela_alerta = init_janela_alerta()
                     janela_form.hide()
-                    janela_alerta['mensagem'].update(f' Iniciando o auto {auto}')
-                    janela_alerta.refresh()
                     print(f'Iniciando auto - {auto}... ')
 
                     if pesquisa_auto(navegador,auto):
-                        janela_alerta.hide()
                         alert('Erro',f'O auto de infração {auto}, não foi localizado. Verifique a lista e tente novamente')
                         acessa_tela_incial_auto(navegador)
                         break
 
                     if values['Auto de Infração']:
-                        janela_alerta.hide()
+                        alert_notify('Auto de Infração', f'{auto}')
                         download_auto_infracao(navegador)
                     if values['Relatório Financeiro']:
-                        janela_alerta.hide()
+                        alert_notify('Iniciando Relatório financeiro', f'{auto}')
                         download_relatorio_financeiro(navegador)
                     if values['Relatório Resumido']:
-                        janela_alerta.hide()
+                        alert_notify('Iniciando Relatório Resumido', f'{auto}')
                         download_relatorio_resumido(navegador)
                     if values['Notificação de autuação']:
-                        janela_alerta.hide()
+                        alert_notify('Iniciando Notificação de autuação', f'{auto}')
                         download_na(navegador)
                     if values['Notificação de Penalidade']:
-                        janela_alerta.hide()
+                        alert_notify('Iniciando Notificação de Penalidade', f'{auto}')
                         download_np(navegador)
 
                     if values['PastasSim']:
                         diretorios_exec(auto)
-                        df.to_csv("relatorio.csv", encoding='utf-8')
                     else:
                         no_diretorio_exec()
 
-                    janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
 
+            # df.to_csv("relatorio.csv", encoding='utf-8')
             janela_form.un_hide()
 
 

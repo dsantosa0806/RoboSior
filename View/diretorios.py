@@ -60,4 +60,14 @@ def no_diretorio_exec():
         alert('erro', f'Erro ao mover os arquivos para a pasta final{ValueError}')
 
 
+def clean_diretorio_autos():
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    os.chdir(download_path)
+    try:
+        for arquivo in os.listdir():
+            os.remove(arquivo)
+    except ValueError:
+        alert('erro', f'Erro ao Apagar os arquivos para a pasta final{ValueError}')
+
+
 

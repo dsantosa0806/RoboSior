@@ -14,8 +14,9 @@ def acessa_sior(navegador):
         #Acesso a tela de login
         url_login = 'http://servicos.dnit.gov.br/sior/Account/Login/?ReturnUrl=%2Fsior%2F'
         navegador.get(url_login)
-    except:
+    except ValueError:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def login(navegador,usuario,senha):
@@ -83,8 +84,9 @@ def acessa_tela_incial_auto(navegador):
     # Acessa a tela da notificação da autuação
     try:
         navegador.get(url_base)
-    except:
+    except ValueError:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def pesquisa_auto(navegador,auto):
@@ -104,6 +106,7 @@ def pesquisa_auto(navegador,auto):
     except TimeoutException:
         alert('Opss', 'O SIOR apresentou instabilidade, a aplicação será encerrada.'
                       ' Por favor reinicie a aplicação e tente novamente')
+        exit()
 
     # INPUT AIT
     try:
@@ -111,6 +114,7 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_auto))).send_keys(input_ait)
     except TimeoutException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
     # DESABILITA FILTRO AUTO
     if navegador.find_element(By.XPATH,path_btn_closefilter).is_displayed():
@@ -119,6 +123,7 @@ def pesquisa_auto(navegador,auto):
                 EC.element_to_be_clickable((By.XPATH, path_btn_closefilter))).click()
         except TimeoutException:
             alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+            exit()
     else:
         pass
     # REALIZA A CONSULTA
@@ -127,6 +132,7 @@ def pesquisa_auto(navegador,auto):
             EC.element_to_be_clickable((By.XPATH, path_btn_consultar))).click()
     except TimeoutException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
     #detalhes
     try:
@@ -137,7 +143,8 @@ def pesquisa_auto(navegador,auto):
         if navegador.find_element(By.XPATH,path_auto_empty).is_displayed():
             return True
         else:
-            ('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+            alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+            exit()
 
 
 def download_auto_infracao(navegador):
@@ -150,16 +157,19 @@ def download_auto_infracao(navegador):
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
     time.sleep(1)
     # CLIQUE PARA BAIXAR O AUTO DE INFRACAO
     try:
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable(
                 (By.XPATH, path_auto_infra))).click()
-        time.sleep(7)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
+        time.sleep(10)  # importante manter um Delay de Time, necessário implementar uma função que verifica se o download foi exec
 
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
+
 
 
 def download_relatorio_resumido(navegador):
@@ -171,6 +181,7 @@ def download_relatorio_resumido(navegador):
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
@@ -182,6 +193,7 @@ def download_relatorio_resumido(navegador):
 
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def download_relatorio_financeiro(navegador):
@@ -193,6 +205,7 @@ def download_relatorio_financeiro(navegador):
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
     try:
@@ -204,6 +217,7 @@ def download_relatorio_financeiro(navegador):
 
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def download_na(navegador):
@@ -235,6 +249,7 @@ def download_na(navegador):
         time.sleep(3)
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def download_np(navegador):
@@ -266,6 +281,7 @@ def download_np(navegador):
         time.sleep(3)
     except ElementClickInterceptedException:
         alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
 def trata_erro(navegador):

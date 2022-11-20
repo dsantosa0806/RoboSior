@@ -1,18 +1,16 @@
 import os
 import getpass as gt
-
-# print(os.getlogin())
-#
-#
-#
-# # using path.expanduser() getting username
-# print(os.path.expanduser('~'))
-# print(os.environ.get('USERNAME'))
-# print(gt.getuser())
+import shutil
 
 
-download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
-os.chdir(download_path)
-atual = os.listdir()
+def clean_diretorio_autos():
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    os.chdir(download_path)
+    try:
+        for arquivo in os.listdir():
+            print(arquivo)
+            os.remove(arquivo)
+    except ValueError:
+        print(f'erro Erro ao Apagar os arquivos para a pasta final{ValueError}')
 
-print(len(atual))
+clean_diretorio_autos()
