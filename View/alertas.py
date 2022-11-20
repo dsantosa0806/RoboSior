@@ -3,11 +3,16 @@ import PySimpleGUI as sg
 
 
 def alert(tipo, alerta):
-    sg.popup(tipo, alerta,button_color=('yellow', '#4F4F4F'), icon=r'images\robot.ico',no_titlebar=True)
+    sg.popup(tipo, alerta,
+             button_color=('yellow', '#4F4F4F'),
+             icon=r'images\robot.ico',
+             no_titlebar=True
+             )
 
 
 def alert_notify(tipo, alerta):
     sg.SystemTray.notify(tipo, alerta, display_duration_in_ms=1500, fade_in_duration=2)
+
 
 def init_janela_alerta():
     # Layout
@@ -60,6 +65,6 @@ def init_janela_apresentacao():
                      layout=layoutcampos,
                      no_titlebar=True,
                      auto_close=True,
-                     auto_close_duration=4)
+                     auto_close_duration=5)
 
 

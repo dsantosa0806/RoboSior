@@ -128,7 +128,6 @@ def init_form_principal():
                     break
                 if valida_campos_pastas(values['PastasSim'],values['PastasNão']) == 0:
                     break
-
                 else:
                     janela_form.hide()
                     print(f'Iniciando auto - {auto}... ')
