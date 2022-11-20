@@ -6,14 +6,13 @@ from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado
-from View.diretorios import diretorios_exec
+from View.diretorios import diretorios_exec, no_diretorio_exec
 from View.limpa_campos import clean_fields, reset_fields
+from View.tabela import init_table_form
 from View.tela_login import init_janela_login
 from View.alertas import alert, init_janela_alerta, init_janela_apresentacao
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
-
-
 from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas, valida_campos_senha
 
 
@@ -21,7 +20,7 @@ def option_navegador():
 
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless") # Oculta o navegador
-    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos' # PROBLEMA
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'  # PROBLEMA
     options.add_experimental_option('prefs', {
         "download.default_directory": download_path,  # change default directory for downloads
         "download.prompt_for_download": False,  # to auto download the file
@@ -83,6 +82,16 @@ def init_form_principal():
             navegador.quit()
             break
 
+## Botao Tabela
+        if event == "Dados":
+            janela_form.hide()
+            tabela = init_table_form()
+            event_table, values_table = tabela.read()
+            if event_table == "voltar":
+                tabela.close()
+                janela_form.un_hide()
+
+
 ## Botao limpar
         if event == "Limpar":
             clean_fields(janela_form)
@@ -139,13 +148,16 @@ def init_form_principal():
                         janela_alerta.hide()
                         download_np(navegador)
 
-                    diretorios_exec(auto)
+                    if values['PastasSim']:
+                        diretorios_exec(auto)
+                        df.to_csv("relatorio.csv", encoding='utf-8')
+                    else:
+                        no_diretorio_exec()
 
                     janela_alerta.close()
                     acessa_tela_incial_auto(navegador)
 
             janela_form.un_hide()
-            # df.to_csv("saida.csv", encoding='utf-8')
 
 
 init_janela_apresentacao().read()

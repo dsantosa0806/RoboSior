@@ -10,7 +10,7 @@ def init_janela_form():
     menu = [[sg.Menu(
         [
          ['Inicio'],
-         ['Sobre', ['Requisitos']],
+         ['Tabela', ['Dados']],
          ['Ajuda']]
         )]
     ]

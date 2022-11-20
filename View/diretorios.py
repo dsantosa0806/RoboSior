@@ -41,4 +41,23 @@ def diretorios_exec(auto):
         alert('erro', f'Erro {ValueError}')
 
 
+def no_diretorio_exec():
+    caminho_destino_padrao = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior'  # PROBLEMA
+    pasta_final = 'Arquivos'
+    os.chdir(caminho_destino_padrao)
+    try:
+        if not os.path.exists(pasta_final):
+            os.mkdir(pasta_final)  # Cria a pasta AIT do Loop
+    except ValueError:
+        alert('Erro', f'{ValueError}')
+
+    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    os.chdir(download_path)
+    try:
+        for arquivo in os.listdir():
+            shutil.move(arquivo, caminho_destino_padrao + '\\' + pasta_final)  # move todos arquivos baixados para a pasta do ait do Loop
+    except ValueError:
+        alert('erro', f'Erro ao mover os arquivos para a pasta final{ValueError}')
+
+
 

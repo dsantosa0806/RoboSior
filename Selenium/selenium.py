@@ -45,6 +45,7 @@ def login(navegador,usuario,senha):
 
         except TimeoutException:
             alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+            exit()
 
 
 def validate_login_error(navegador):

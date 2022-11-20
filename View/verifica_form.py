@@ -27,6 +27,10 @@ def valida_campos_pastas(sim, nao):
             nao is False:
         alert('Atenção', 'Indique se você deseja criar pastas.')
         return 0
+    elif sim is True and\
+            nao is True:
+        alert('Atenção', 'Selecione apenas uma opção na criação de pastas.')
+        return 0
 
 
 def valida_campos_senha(usuario, senha):
