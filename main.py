@@ -153,7 +153,6 @@ def init_form_principal():
                     if values['Notificação de Penalidade']:
                         alert_notify('Iniciando Notificação de Penalidade', f'{auto}')
                         download_np(navegador)
-
                     if values['PastasSim']:
                         diretorios_exec(auto)
                     else:
