@@ -34,7 +34,7 @@ def init_janela_form():
                       tooltip='Antes de alimentar os campos, verifique o tamanho do Nº do Auto.')],
         [sg.Button('Limpar', font=('Segoe UI', 10))],
         [sg.Text('______________________________')],
-        [sg.Output(size=(50, 10),font=('Segoe UI',10),key='Output')],
+        [sg.Output(size=(50, 10),font=('Segoe UI',10),key='Output',)],
         [sg.Button('Iniciar',button_color='green',font=('Segoe UI',10)),sg.Button('Resetar',font=('Segoe UI',10))
          ]
     ]

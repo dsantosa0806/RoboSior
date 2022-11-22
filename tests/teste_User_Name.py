@@ -16,27 +16,38 @@ import shutil
 # clean_diretorio_autos()
 #
 # print(os.getcwd())
+#
+# download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+# print(os.listdir(download_path))
+# print(len(os.listdir(download_path)))
+#
+# values = {0: None, 'Auto de Infração': True,
+#           'Relatório Financeiro': True,
+#           'Relatório Resumido': False,
+#           'Notificação de autuação': False,
+#           'Notificação de Penalidade': False,
+#           'PastasSim': False,
+#           'PastasNão': False,
+#           'auto': ''}
+#
+# Qutde = str(values).count('True')-1
+#
+# print(Qutde)
+#
+# while True:
+#     if len(os.listdir(download_path)) < str(values).count('True')-1:
+#         print('A quantidade é menor')
+#     else:
+#         print('A quantidade é maior')
+#         break
+
 
 download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
-print(os.listdir(download_path))
-print(len(os.listdir(download_path)))
 
-values = {0: None, 'Auto de Infração': True,
-          'Relatório Financeiro': True,
-          'Relatório Resumido': False,
-          'Notificação de autuação': False,
-          'Notificação de Penalidade': False,
-          'PastasSim': False,
-          'PastasNão': False,
-          'auto': ''}
 
-Qutde = str(values).count('True')-1
+print((os.listdir(download_path)))
+for arquivo in os.listdir(download_path):
+    arquivo, extencao = os.path.splitext(arquivo)
+    print(extencao)
 
-print(Qutde)
 
-while True:
-    if len(os.listdir(download_path)) < str(values).count('True')-1:
-        print('A quantidade é menor')
-    else:
-        print('A quantidade é maior')
-        break

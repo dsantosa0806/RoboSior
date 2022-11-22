@@ -35,7 +35,7 @@ def init_help_form():
                  '3 - Consultar algumas informações referente aos autos de infração\n'                                        
                  '\n'
                  '\n'
-                 'IMPORTANTE.\n'
+                 'IMPORTANTE\n'
                  '\n'
                  'Por se tratar de manipulação de um sistema, devido a extremas volatividades do ambiente, será frequente \n'
                  'a necessidade de reiniciar a aplicação.\n'

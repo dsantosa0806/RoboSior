@@ -1,5 +1,6 @@
 import os
 import shutil
+
 from View.alertas import alert, alert_notify
 
 
@@ -21,9 +22,11 @@ def diretorios_exec(auto):
             os.mkdir(pasta_loop)  # Cria a pasta AIT do Loop
 
     except ValueError:
+
         shutil.rmtree(pasta_loop)
         alert('Erro','A Pasta já existe e será deletada. Tente novamente!')
         os.mkdir(pasta_loop)
+
     try:
         for arquivo in os.listdir():
             if arquivo != pasta_loop:
@@ -55,7 +58,11 @@ def no_diretorio_exec():
     os.chdir(download_path)
     try:
         for arquivo in os.listdir():
-            shutil.move(arquivo, caminho_destino_padrao + '\\' + pasta_final)  # move todos arquivos baixados para a pasta do ait do Loop
+            if os.path.exists(caminho_destino_padrao + '\\' + pasta_final + '\\' + arquivo):
+                os.remove(caminho_destino_padrao + '\\' + pasta_final + '\\' + arquivo)
+                shutil.move(arquivo, caminho_destino_padrao + '\\' + pasta_final)
+            else:
+                shutil.move(arquivo, caminho_destino_padrao + '\\' + pasta_final)  # move todos arquivos baixados para a pasta do ait do Loop
     except ValueError:
         alert('erro', f'Erro ao mover os arquivos para a pasta final{ValueError}')
 
@@ -73,8 +80,7 @@ def clean_diretorio_autos():
 def verify_downloads(values):
     download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
     while True:
-        if len(os.listdir(download_path)) < str(values).count('True')-1: # Não conta o True de criar pasta
+        if len(os.listdir(download_path)) < str(values).count('True')-1:  # Não conta o True de criar pasta
             alert_notify('Aviso','Aguardando a finalização do download.')
         else:
             break
-

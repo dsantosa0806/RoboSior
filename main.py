@@ -1,8 +1,10 @@
+
+
 import pandas as pd
 from selenium import webdriver
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
-    download_auto_infracao, validate_logado
+    download_auto_infracao, validate_logado, extract_info_ait
 from View.ajuda import init_help_form
 from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos, verify_downloads
 from View.limpa_campos import clean_fields, reset_fields
@@ -12,6 +14,8 @@ from View.alertas import alert, init_janela_alerta, init_janela_apresentacao, al
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
 from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas, valida_campos_senha
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 def option_navegador():
@@ -28,7 +32,7 @@ def option_navegador():
     return options
 
 
-navegador = webdriver.Chrome(options=option_navegador())
+navegador = webdriver.Chrome(options=option_navegador(),service=Service(ChromeDriverManager().install()))
 
 
 def init_form_login(navegador):
@@ -133,9 +137,6 @@ def init_form_principal():
                         acessa_tela_incial_auto(navegador)
                         break
 
-                    if values['Auto de Infração']:
-                        alert_notify('Auto de Infração', f'{auto}')
-                        download_auto_infracao(navegador)
                     if values['Relatório Financeiro']:
                         alert_notify('Iniciando Relatório financeiro', f'{auto}')
                         download_relatorio_financeiro(navegador)
@@ -148,6 +149,9 @@ def init_form_principal():
                     if values['Notificação de Penalidade']:
                         alert_notify('Iniciando Notificação de Penalidade', f'{auto}')
                         download_np(navegador)
+                    if values['Auto de Infração']:
+                        alert_notify('Auto de Infração', f'{auto}')
+                        download_auto_infracao(navegador)
 
                     verify_downloads(values)
 
@@ -156,6 +160,14 @@ def init_form_principal():
                     else:
                         no_diretorio_exec()
                     print(f'Auto - {auto} - Finalizado! ')
+
+                    acessa_tela_incial_auto(navegador)
+
+                    auto_text, data_infra, enquadramento = extract_info_ait(navegador,auto)
+                    alert('Aviso', f'Auto - {auto_text},'
+                                   f'Data infra  {data_infra},'
+                                   f'Enquadramento {enquadramento}')
+
                     acessa_tela_incial_auto(navegador)
 
             # df.to_csv("relatorio.csv", encoding='utf-8')

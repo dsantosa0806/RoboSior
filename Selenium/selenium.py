@@ -231,9 +231,105 @@ def trata_erro(navegador):
         navegador.back()  # Deve retornar a tela anterior
 
 
-def extract_info_ait(navegador):
-    situacao_fase_auto_path = '//*[@id="center-pane"]/div/div/div/div[1]/div[2]/div[3]/text()'
-    situacao_fase_auto = navegador.find_element(By.XPATH, situacao_fase_auto_path).text
-    return situacao_fase_auto
+def extract_info_ait(navegador, auto):
+
+    path_auto_text = '//*[@id="gridInfracao"]/table/tbody/tr/td[2]'
+    path_data_infra = '//*[@id="gridInfracao"]/table/tbody/tr/td[4]'
+    path_enquadramento = '//*[@id="gridInfracao"]/table/tbody/tr/td[5]'
+    path_valor = '//*[@id="gridInfracao"]/table/tbody/tr/td[11]'
+    path_debito = '//*[@id="gridInfracao"]/table/tbody/tr/td[13]'
+    path_vencimento_np = '//*[@id="gridInfracao"]/table/tbody/tr/td[12]'
+    path_situacao_fase_auto = '//*[@id="gridInfracao"]/table/tbody/tr/td[15]'
+
+    input_ait = auto
+    path_auto = '//*[@id="NumeroAuto"]'
+    path_btn_closefilter = '//*[@id="SituacoesInfracaoSelecionadas_taglist"]/li/span[2]'
+    path_btn_consultar = '//*[@id="placeholder"]/div[1]/div/div[1]/button'
+    path_details = '//*[@id="gridInfracao"]/table/tbody/tr/td[1]/a'
+    path_auto_empty = '//*[@id="gridInfracao"]/div[1]'
+
+    try:
+        WebDriverWait(navegador, 60).until(
+            EC.element_to_be_clickable((By.XPATH, path_auto))).clear()
+    except TimeoutException:
+        alert('Opss', 'O SIOR apresentou instabilidade, a aplicação será encerrada.'
+                      ' Por favor reinicie a aplicação e tente novamente')
+        exit()
+
+    # INPUT AIT
+    try:
+        WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_auto))).send_keys(input_ait)
+    except TimeoutException:
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
+
+    # DESABILITA FILTRO AUTO
+    if navegador.find_element(By.XPATH,path_btn_closefilter).is_displayed():
+        try:
+            WebDriverWait(navegador, 10).until(
+                EC.element_to_be_clickable((By.XPATH, path_btn_closefilter))).click()
+        except TimeoutException:
+            alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+            exit()
+    else:
+        pass
+    # REALIZA A CONSULTA
+    try:
+        WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_btn_consultar))).click()
+    except TimeoutException:
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
+
+    # Auto
+    try:
+        auto = WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_auto_text))).text
+        data_infra = WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_data_infra))).text
+        enquadramento = WebDriverWait(navegador, 10).until(
+            EC.element_to_be_clickable((By.XPATH, path_enquadramento))).text
+
+        return auto, data_infra, enquadramento
+
+    except ElementClickInterceptedException:
+        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        exit()
 
 
+    #
+    # # Valor ait
+    # try:
+    #     WebDriverWait(navegador, 10).until(
+    #         EC.element_to_be_clickable((By.XPATH, path_valor))).text
+    # except ElementClickInterceptedException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+    #     exit()
+    #
+    # # Situacao Débito
+    # try:
+    #     WebDriverWait(navegador, 10).until(
+    #         EC.element_to_be_clickable((By.XPATH, path_debito))).text
+    # except ElementClickInterceptedException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+    #     exit()
+    #
+    # # Vencimento NP
+    # try:
+    #     WebDriverWait(navegador, 10).until(
+    #         EC.element_to_be_clickable((By.XPATH, path_vencimento_np))).text
+    # except ElementClickInterceptedException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+    #     exit()
+    #
+    # # Situação / Fase do auto
+    # try:
+    #     WebDriverWait(navegador, 10).until(
+    #         EC.element_to_be_clickable((By.XPATH, path_situacao_fase_auto))).text
+    # except ElementClickInterceptedException:
+    #     alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+    #     exit()
+    #
+    #
+    #
