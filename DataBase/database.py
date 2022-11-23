@@ -5,7 +5,7 @@ import pandas as pd
 
 def create_db():
     if os.path.exists('Bd_autos.db'):
-        os.remove('Bd_autos.db')
+        os.remove('Bd_autos.db') # Apaga o banco a cada Lista consultada
     conexao = sqlite3.connect('Bd_autos.db')
     c = conexao.cursor()
     c.execute(''' CREATE TABLE dados(
@@ -49,14 +49,14 @@ def cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
 
 
 def consulta_bd():
-    conexao = sqlite3.connect('Bd_autos.db')
+    conexao = sqlite3.connect(r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\Bd_autos.db')
     c = conexao.cursor()
 
     #
     c.execute("SELECT *, oid FROM dados")  # Verificar
     dados = c.fetchall()
     consulta = pd.DataFrame(dados, columns=['Auto','DataInfracao','Enquadramento','Valor','Debito',
-                                            'Vencimento','SituacaoFase'])
+                                            'Vencimento','SituacaoFase','index'])
 
     # dados.to_excel(f'''dados_finalizados_{data}.xlsx''',sheet_name='Resultado',index=False)
 
