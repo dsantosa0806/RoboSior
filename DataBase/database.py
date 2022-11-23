@@ -4,45 +4,42 @@ import pandas as pd
 
 
 def create_db():
-    bd = 'Bd_autos.db'
-    if not os.path.exists(bd):
-        conexao = sqlite3.connect(bd)
-        c = conexao.cursor()
-        c.execute(''' CREATE TABLE IF NOT EXISTS dados
-        (
-        Auto text,
-        Data Infracao text,
-        Enquadramento text,
-        Valor text,
-        Debito text,
-        Vencimento text,
-        Situacao_Fase text,
-        )    
-        ''')
+    if os.path.exists('Bd_autos.db'):
+        os.remove('Bd_autos.db')
+    conexao = sqlite3.connect('Bd_autos.db')
+    c = conexao.cursor()
+    c.execute(''' CREATE TABLE dados(
+            Auto text,
+            DataInfracao text,
+            Enquadramento text,
+            Valor text,
+            Debito text,
+            Vencimento text,
+            SituacaoFase text)  
+            ''')
 
-        # Commit as mudanças:
-        conexao.commit()
+# Commit as mudanças:
+    conexao.commit()
 
-        # Fechar o banco de dados:
-        conexao.close()
+# Fechar o banco de dados:
+    conexao.close()
 
 
 def cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
-                           vencimento, situacao_fase):
-    conexao = sqlite3.connect('Bd_autos.db')
+                           vencimento, SituacaoFase):
+    conexao = sqlite3.connect(r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\Bd_autos.db')
     c = conexao.cursor()
 
     #Inserir dados na tabela do BD:
-    c.execute("INSERT INTO dados VALUES (:Auto,:Data Infracao,:Enquadramento,"
-              ":Valor,:Debito,:Vencimento,:Situacao_Fase)",
+    c.execute("INSERT INTO dados VALUES (:Auto,:DataInfracao,:Enquadramento,:Valor,:Debito,:Vencimento,:SituacaoFase)",
               {
                   'Auto': auto,
-                  'Data Infracao': data_infra,
+                  'DataInfracao': data_infra,
                   'Enquadramento': enquadramento,
                   'Valor': valor,
                   'Debito': debito,
                   'Vencimento':vencimento,
-                  'Situacao_Fase':situacao_fase
+                  'SituacaoFase':SituacaoFase
 
               })
     # Commit as mudanças:
@@ -58,8 +55,8 @@ def consulta_bd():
     #
     c.execute("SELECT *, oid FROM dados")  # Verificar
     dados = c.fetchall()
-    consulta = pd.DataFrame(dados, columns=['Auto','Data Infracao','Enquadramento','Valor','Debito',
-                                            'Vencimento','Situacao_Fase'])
+    consulta = pd.DataFrame(dados, columns=['Auto','DataInfracao','Enquadramento','Valor','Debito',
+                                            'Vencimento','SituacaoFase'])
 
     # dados.to_excel(f'''dados_finalizados_{data}.xlsx''',sheet_name='Resultado',index=False)
 

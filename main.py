@@ -3,7 +3,7 @@
 import pandas as pd
 from selenium import webdriver
 
-from DataBase.database import create_db
+from DataBase.database import create_db, cadastrar_demanda_base
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado, extract_info_ait
@@ -165,11 +165,14 @@ def init_form_principal():
                     print(f'Auto - {auto} - Finalizado! ')
 
                     acessa_tela_incial_auto(navegador)
+
                     #
                     auto, data_infra, enquadramento, valor, debito, \
                         vencimento, situacao_fase = extract_info_ait(navegador, auto)
                     alert('Teste Retorno', f'{auto},{data_infra},{enquadramento},{valor},'
                                            f'{debito},{vencimento},{situacao_fase}')
+                    cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
+                                           vencimento, situacao_fase)
 
                     acessa_tela_incial_auto(navegador)
 
