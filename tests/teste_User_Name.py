@@ -46,8 +46,9 @@ download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
 
 
 print((os.listdir(download_path)))
-for arquivo in os.listdir(download_path):
-    arquivo, extencao = os.path.splitext(arquivo)
-    print(extencao)
+if '.crdownload' or '.tmp' in str(os.listdir(download_path)):
+    print('Elemento Loc')
+
+
 
 

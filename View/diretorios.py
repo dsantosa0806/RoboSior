@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 
 from View.alertas import alert, alert_notify
 
@@ -79,8 +80,19 @@ def clean_diretorio_autos():
 
 def verify_downloads(values):
     download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'
+    contador = 60
     while True:
-        if len(os.listdir(download_path)) < str(values).count('True')-1:  # Não conta o True de criar pasta
-            alert_notify('Aviso','Aguardando a finalização do download.')
+        if contador == 0:
+            return 1
         else:
-            break
+            if len(os.listdir(download_path)) < str(values).count('True')-1 or\
+                    '.crdownload' in str(os.listdir(download_path)) or\
+                    '.tmp' in str(os.listdir(download_path)):  # Não conta o True de criar pasta
+                alert_notify('Aviso',f'Estamos tentando realizar o download. Tentativas - ({contador})')
+                time.sleep(0.5)
+                contador -= 1
+            else:
+                break
+
+        # else:
+        #     break

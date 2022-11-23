@@ -2,6 +2,8 @@
 
 import pandas as pd
 from selenium import webdriver
+
+from DataBase.database import create_db
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado, extract_info_ait
@@ -152,9 +154,10 @@ def init_form_principal():
                     if values['Auto de Infração']:
                         alert_notify('Auto de Infração', f'{auto}')
                         download_auto_infracao(navegador)
-
-                    verify_downloads(values)
-
+                    if verify_downloads(values) == 1:
+                        alert('Erro','O tempo limite foi alcançado a aplicação será fechada')
+                        janela_form.close()
+                        navegador.close()
                     if values['PastasSim']:
                         diretorios_exec(auto)
                     else:
@@ -162,11 +165,11 @@ def init_form_principal():
                     print(f'Auto - {auto} - Finalizado! ')
 
                     acessa_tela_incial_auto(navegador)
-
-                    auto_text, data_infra, enquadramento = extract_info_ait(navegador,auto)
-                    alert('Aviso', f'Auto - {auto_text},'
-                                   f'Data infra  {data_infra},'
-                                   f'Enquadramento {enquadramento}')
+                    #
+                    auto, data_infra, enquadramento, valor, debito, \
+                        vencimento, situacao_fase = extract_info_ait(navegador, auto)
+                    alert('Teste Retorno', f'{auto},{data_infra},{enquadramento},{valor},'
+                                           f'{debito},{vencimento},{situacao_fase}')
 
                     acessa_tela_incial_auto(navegador)
 
@@ -174,6 +177,7 @@ def init_form_principal():
             janela_form.un_hide()
 
 
+create_db()
 init_janela_apresentacao().read()
 acessa_sior(navegador)
 init_form_login(navegador)
