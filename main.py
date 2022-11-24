@@ -1,6 +1,6 @@
 import pandas as pd
 from selenium import webdriver
-from DataBase.database import create_db, cadastrar_demanda_base, consulta_bd, export_dados, clean_bd
+from DataBase.database import create_db, cadastrar_demanda_base, export_dados, clean_bd
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado, extract_info_ait
@@ -10,7 +10,7 @@ from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_
 from View.limpa_campos import clean_fields, reset_fields
 from View.tabela import init_table_form
 from View.tela_login import init_janela_login
-from View.alertas import alert, init_janela_alerta, init_janela_apresentacao, alert_notify
+from View.alertas import alert, init_janela_apresentacao, alert_notify
 from View.tela_form import init_janela_form
 import PySimpleGUI as sg
 from View.verifica_form import valida_campos_auto, valida_campos_docs, valida_campos_pastas, valida_campos_senha
@@ -21,8 +21,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 def option_navegador():
 
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless") # Oculta o navegador
-    download_path = r'C:\Robot autos'  # PROBLEMA
+    options.add_argument("--headless")  # Oculta o navegador
+    download_path = r'C:\Robot autos'
     options.add_experimental_option('prefs', {
         "download.default_directory": download_path,  # change default directory for downloads
         "download.prompt_for_download": False,  # to auto download the file

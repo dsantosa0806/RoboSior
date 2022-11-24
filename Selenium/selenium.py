@@ -3,7 +3,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import re
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, NoSuchElementException
 from View.alertas import alert, alert_notify
 ## Oh Lord, forgive for what i'm about to Code !

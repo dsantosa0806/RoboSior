@@ -11,10 +11,7 @@ def init_table_form():
 
     # Cabeçalho
     headings = ['Auto','DataInfracao','Enquadramento','Valor','Debito','Vencimento','SituacaoFase','index']
-    values = [['B123456789', '01/01/1900', 'tESTE', 'R$ 90,45', 'Em Aberto', '01/01/1900', 'Ativo / Publicado Edital NP', 1]]
-
     layout = [
-
         [sg.Text("Tabela autos", font=('Segoe UI',12))],
         [sg.Table(values=consulta_bd().values.tolist(), headings=headings,
                   num_rows=10,
@@ -27,12 +24,9 @@ def init_table_form():
                   expand_x=False,
                   expand_y=True,
                   max_col_width=50,
-
-
                   )],
         [sg.Button("Voltar", key="voltar"),
          sg.Button("Exportar", key="Exportar")]
-
     ]
 
     # Janela
