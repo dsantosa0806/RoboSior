@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import re
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, NoSuchElementException
-from View.alertas import alert
+from View.alertas import alert, alert_notify
 ## Oh Lord, forgive for what i'm about to Code !
 
 
@@ -153,7 +153,7 @@ def download_auto_infracao(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_auto_infra))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 
@@ -164,7 +164,7 @@ def download_relatorio_resumido(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
@@ -173,7 +173,7 @@ def download_relatorio_resumido(navegador):
             EC.element_to_be_clickable(
                 (By.ID, path_id_relatorio))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 
@@ -184,7 +184,7 @@ def download_relatorio_financeiro(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_menu_relat))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
     # CLIQUE PARA BAIXAR RELATÓRIO RESUMIDO
@@ -203,7 +203,7 @@ def download_na(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_download_na))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 
@@ -213,7 +213,7 @@ def download_np(navegador):
         WebDriverWait(navegador, 10).until(
             EC.element_to_be_clickable((By.XPATH, path_download_np))).click()
     except ElementClickInterceptedException:
-        alert('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
+        alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
 
 

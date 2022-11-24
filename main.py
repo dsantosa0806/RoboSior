@@ -1,14 +1,12 @@
-
-
 import pandas as pd
 from selenium import webdriver
-
-from DataBase.database import create_db, cadastrar_demanda_base, consulta_bd
+from DataBase.database import create_db, cadastrar_demanda_base, consulta_bd, export_dados, clean_bd
 from Selenium.selenium import login, acessa_sior, pesquisa_auto, acessa_tela_incial_auto, download_relatorio_resumido, \
     validate_login_error, download_na, download_np, download_relatorio_financeiro, \
     download_auto_infracao, validate_logado, extract_info_ait
 from View.ajuda import init_help_form
-from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos, verify_downloads
+from View.diretorios import diretorios_exec, no_diretorio_exec, clean_diretorio_autos, verify_downloads, \
+    create_diretorios_arquivos
 from View.limpa_campos import clean_fields, reset_fields
 from View.tabela import init_table_form
 from View.tela_login import init_janela_login
@@ -24,7 +22,7 @@ def option_navegador():
 
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless") # Oculta o navegador
-    download_path = r'C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\autos'  # PROBLEMA
+    download_path = r'C:\Robot autos'  # PROBLEMA
     options.add_experimental_option('prefs', {
         "download.default_directory": download_path,  # change default directory for downloads
         "download.prompt_for_download": False,  # to auto download the file
@@ -41,7 +39,6 @@ def init_form_login(navegador):
     janela_login = init_janela_login()
     while True:
         event, values = janela_login.read()
-        print(event, values)
         if (event == sg.WINDOW_CLOSED
                 or event == sg.WINDOW_CLOSE_ATTEMPTED_EVENT):
             janela_login.close()
@@ -94,6 +91,12 @@ def init_form_principal():
             if event_table == "voltar":
                 tabela.close()
                 janela_form.un_hide()
+            if event_table == "Exportar":
+                export_dados()
+                alert_notify('Aguarde...','Gerando Relatório em Csv')
+                tabela.close()
+                janela_form.un_hide()
+                alert('Relatório gerado !', 'Relatório disponível em: C:\Robot Relatorios')
 
 
 ## Botao Ajuda Requisitos
@@ -113,6 +116,7 @@ def init_form_principal():
             reset_fields(event,janela_form)
 ## Botao Iniciar
         if event == "Iniciar":
+            clean_bd()
             clean_diretorio_autos()
             auto = values['auto'].split('\n')
             #criação do DF
@@ -170,8 +174,6 @@ def init_form_principal():
                     #
                     auto, data_infra, enquadramento, valor, debito, \
                         vencimento, situacao_fase = extract_info_ait(navegador, auto)
-                    alert('Teste Retorno', f'{auto},{data_infra},{enquadramento},{valor},'
-                                           f'{debito},{vencimento},{situacao_fase}')
 
                     cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
                                            vencimento, situacao_fase)
@@ -182,6 +184,7 @@ def init_form_principal():
             janela_form.un_hide()
 
 
+create_diretorios_arquivos()
 create_db()
 init_janela_apresentacao().read()
 acessa_sior(navegador)

@@ -1,5 +1,7 @@
 import sqlite3
 import os
+from datetime import datetime
+
 import pandas as pd
 
 
@@ -68,8 +70,29 @@ def consulta_bd():
     return consulta
 
 
+def clean_bd():
+    conexao = sqlite3.connect('Bd_autos.db')
+    c = conexao.cursor()
+
+    #
+    c.execute("DELETE FROM dados WHERE Auto IS NOT NULL")
+    # Commit as mudanças:
+    conexao.commit()
+    # Fechar o banco de dados:
+    conexao.close()
 
 
+def export_dados():
+    conexao = sqlite3.connect(r'Bd_autos.db')
+    c = conexao.cursor()
+    c.execute("SELECT *, oid FROM dados")  # Verificar
+    data = (datetime.today().strftime('%Y-%m-%d %H_%M'))  # data de geração do arquivo
+    dados = c.fetchall()
+    consulta = pd.DataFrame(dados, columns=['Auto', 'DataInfracao', 'Enquadramento', 'Valor', 'Debito',
+                                            'Vencimento', 'SituacaoFase', 'index'])
+    consulta.to_csv(fr'''C:\Users\Usuário\OneDrive\Documentos\GitHub\RoboSior\dados_finalizados_{data}.csv''', encoding='utf-8', index=False)
+    conexao.commit()
+    conexao.close()
 
 
 auto = 'B123456789'
@@ -88,4 +111,7 @@ cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
 
 tabela = consulta_bd()
 print(tabela.values.tolist())
+export_dados()
+
+
 

@@ -2,7 +2,6 @@ import PySimpleGUI as sg
 from DataBase.database import consulta_bd
 
 
-
 def init_table_form():
     # Layout
 
