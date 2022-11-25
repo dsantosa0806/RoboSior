@@ -119,13 +119,8 @@ def init_form_principal():
             clean_bd()
             clean_diretorio_autos()
             auto = values['auto'].split('\n')
-            #criação do DF
-            df = pd.DataFrame(data=auto, columns=['autos'])
-            #Diretório
-            diretorio = 'autos'
+            df = pd.DataFrame(data=auto, columns=['autos'])  # criação do DF
             limite_array = 10
-            # if not os.path.exists(diretorio):
-            #     os.mkdir(diretorio)
             if len(auto) >= limite_array:
                 alert('Atenção','O limite de 10 autos foi atingido')
             for i, auto in enumerate(df['autos']):
@@ -143,7 +138,6 @@ def init_form_principal():
                         alert('Erro',f'O auto de infração {auto}, não foi localizado. Verifique a lista e tente novamente')
                         acessa_tela_incial_auto(navegador)
                         break
-
                     if values['Relatório Financeiro']:
                         alert_notify('Iniciando Relatório financeiro', f'{auto}')
                         download_relatorio_financeiro(navegador)
@@ -168,19 +162,12 @@ def init_form_principal():
                     else:
                         no_diretorio_exec()
                     print(f'Auto - {auto} - Finalizado! ')
-
                     acessa_tela_incial_auto(navegador)
-
-                    #
                     auto, data_infra, enquadramento, valor, debito, \
                         vencimento, situacao_fase = extract_info_ait(navegador, auto)
-
                     cadastrar_demanda_base(auto, data_infra, enquadramento, valor, debito,
                                            vencimento, situacao_fase)
-
                     acessa_tela_incial_auto(navegador)
-
-            # df.to_csv("relatorio.csv", encoding='utf-8')
             janela_form.un_hide()
 
 
@@ -189,3 +176,4 @@ create_db()
 init_janela_apresentacao().read()
 acessa_sior(navegador)
 init_form_login(navegador)
+

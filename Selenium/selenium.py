@@ -2,7 +2,6 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from bs4 import BeautifulSoup
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException, NoSuchElementException
 from View.alertas import alert, alert_notify
 ## Oh Lord, forgive for what i'm about to Code !
@@ -214,20 +213,6 @@ def download_np(navegador):
     except ElementClickInterceptedException:
         alert_notify('Erro', 'O SIOR apresentou instabilidade, por favor reinicie a aplicação e tente novamente')
         exit()
-
-
-def trata_erro(navegador):
-
-    msg_erro = "Server Error in '/sior' Application."
-    url_atual = navegador.page_source.encode('utf-8')
-    soup_ulr_atual = BeautifulSoup(url_atual, 'html.parser')
-    posicao_erro = str(soup_ulr_atual).find(msg_erro)
-
-    if posicao_erro == -1:
-        # Download feito com sucesso
-        pass
-    else:
-        navegador.back()  # Deve retornar a tela anterior
 
 
 def extract_info_ait(navegador, auto):
